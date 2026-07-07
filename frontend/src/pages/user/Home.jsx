@@ -5,7 +5,7 @@ import {
   PawPrint, ShoppingCart, Star, Truck, Shield, Heart, 
   ArrowRight, ChevronRight, Bone, Fish, Bird, Rabbit 
 } from 'lucide-react';
-
+import home from "../../assets/home.png"
 // --- Reusable Animation Hook ---
 const useScrollReveal = () => {
   const ref = useRef(null);
@@ -148,7 +148,7 @@ const ProductCard = ({ product }) => {
 // --- Main Page Sections ---
 
 const HeroSection = () => (
-  <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-[#F8FAFC]">
+  <section className="relative pt-22 pb-20 md:pt-25 md:pb-32 overflow-hidden bg-[#F8FAFC]">
     {/* Background Decorations */}
     <div className="absolute top-20 right-0 w-96 h-96 bg-[#22C55E]/5 rounded-full blur-3xl" />
     <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#38BDF8]/5 rounded-full blur-3xl" />
@@ -224,21 +224,18 @@ const HeroSection = () => (
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative hidden lg:block"
         >
-          <div className="relative z-10 bg-gradient-to-br from-[#22C55E]/20 to-[#38BDF8]/20 rounded-[2.5rem] p-8">
-            <div className="aspect-[4/5] bg-white rounded-3xl shadow-2xl overflow-hidden relative">
+          <div className="relative z-10 bg-linear-to-br from-[#22C55E]/20 to-[#38BDF8]/20 rounded-[2.5rem]">
+            <div className="h-110 bg-white rounded-3xl shadow-2xl overflow-hidden relative">
                {/* Placeholder Hero Image */}
-               <div className="absolute inset-0 bg-gradient-to-br from-[#F8FAFC] to-gray-100 flex items-center justify-center">
-                  <div className="text-center">
-                    <PawPrint className="w-32 h-32 text-[#22C55E]/20 mx-auto mb-4" />
-                    <p className="text-gray-400 font-medium">Hero Image Placeholder</p>
-                  </div>
+               <div className="absolute inset-0  bg-linear-to-br from-[#F8FAFC] to-gray-100 flex items-center justify-center">
+                  <img src={home} alt="home-image" />
                </div>
                
                {/* Floating Cards */}
-               <motion.div 
+               {/* <motion.div 
                  animate={{ y: [0, -10, 0] }}
                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                 className="absolute top-8 left-8 bg-white p-4 rounded-2xl shadow-xl border border-[#E5E7EB]"
+                 className="absolute top-[-20px] z-1000 left-1 bg-white p-4 rounded-2xl shadow-xl border border-[#E5E7EB]"
                >
                  <div className="flex items-center gap-3">
                    <div className="bg-[#22C55E]/10 p-2 rounded-lg">
@@ -249,7 +246,7 @@ const HeroSection = () => (
                      <p className="font-bold text-[#1F2937]">Free Shipping</p>
                    </div>
                  </div>
-               </motion.div>
+               </motion.div> */}
 
                <motion.div 
                  animate={{ y: [0, 10, 0] }}
