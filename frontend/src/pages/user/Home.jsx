@@ -231,22 +231,7 @@ const HeroSection = () => (
                   <img src={home} alt="home-image" />
                </div>
                
-               {/* Floating Cards */}
-               {/* <motion.div 
-                 animate={{ y: [0, -10, 0] }}
-                 transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                 className="absolute top-[-20px] z-1000 left-1 bg-white p-4 rounded-2xl shadow-xl border border-[#E5E7EB]"
-               >
-                 <div className="flex items-center gap-3">
-                   <div className="bg-[#FF80C7]/10 p-2 rounded-lg">
-                     <Truck className="w-5 h-5 text-[#FF80C7]" />
-                   </div>
-                   <div>
-                     <p className="text-xs text-gray-500">Delivery</p>
-                     <p className="font-bold text-[#1F2937]">Free Shipping</p>
-                   </div>
-                 </div>
-               </motion.div> */}
+               
 
                <motion.div 
                  animate={{ y: [0, 10, 0] }}
