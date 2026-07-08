@@ -230,8 +230,6 @@ const HeroSection = () => (
                <div className="absolute inset-0  bg-linear-to-br from-[#F8FAFC] to-gray-100 flex items-center justify-center">
                   <img src={home} alt="home-image" />
                </div>
-               
-               
 
                <motion.div 
                  animate={{ y: [0, 10, 0] }}

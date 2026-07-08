@@ -11,6 +11,8 @@ import Cart from "./pages/user/Cart";
 
 import Dashboard from "./pages/admin/Dashboard";
 import Category from "./pages/admin/Category";
+import Subcategory from "./pages/admin/Subcategory";
+import Brand from "./pages/admin/Brand";
 
 function AppContent() {
   const location = useLocation();
@@ -33,6 +35,8 @@ function AppContent() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="categories" element={<Category />} />
+          <Route path="subcategories" element={<Subcategory />} />
+          <Route path="brands" element={<Brand />} />
         </Route>
       </Routes>
     </>

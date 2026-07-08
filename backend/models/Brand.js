@@ -1,0 +1,28 @@
+import mongoose from "mongoose";
+
+const brandSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+    slug: String,
+
+    image: String,
+
+    description: String,
+
+    status: {
+      type: String,
+      enum: ["Active", "Inactive"],
+      default: "Active",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+export default mongoose.model("Brand", brandSchema);
