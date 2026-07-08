@@ -38,7 +38,7 @@ const itemVariants = {
 
 // --- Data ---
 const categories = [
-  { name: 'Dogs', icon: PawPrint, color: 'bg-[#22C55E]/10 text-[#22C55E]', count: '240+ Products' },
+  { name: 'Dogs', icon: PawPrint, color: 'bg-[#FF80C7]/10 text-[#FF80C7]', count: '240+ Products' },
   { name: 'Cats', icon: Fish, color: 'bg-[#38BDF8]/10 text-[#38BDF8]', count: '180+ Products' },
   { name: 'Birds', icon: Bird, color: 'bg-[#F97316]/10 text-[#F97316]', count: '95+ Products' },
   { name: 'Small Pets', icon: Rabbit, color: 'bg-purple-500/10 text-purple-500', count: '120+ Products' },
@@ -50,11 +50,11 @@ const products = [
   { id: 1, name: 'Premium Grain-Free Dog Food', price: 49.99, rating: 4.8, reviews: 128, tag: 'Best Seller', tagColor: 'bg-[#F97316]' },
   { id: 2, name: 'Interactive Cat Toy Set', price: 24.99, rating: 4.9, reviews: 89, tag: 'New', tagColor: 'bg-[#38BDF8]' },
   { id: 3, name: 'Orthopedic Pet Bed - Large', price: 79.99, rating: 4.7, reviews: 256, tag: null, tagColor: '' },
-  { id: 4, name: 'Organic Salmon Oil Supplement', price: 34.99, rating: 4.9, reviews: 412, tag: 'Popular', tagColor: 'bg-[#22C55E]' },
+  { id: 4, name: 'Organic Salmon Oil Supplement', price: 34.99, rating: 4.9, reviews: 412, tag: 'Popular', tagColor: 'bg-[#FF80C7]' },
 ];
 
 const features = [
-  { icon: Truck, title: 'Free Fast Shipping', desc: 'Free delivery on orders over $35. Same-day dispatch available.', color: 'text-[#22C55E]' },
+  { icon: Truck, title: 'Free Fast Shipping', desc: 'Free delivery on orders over $35. Same-day dispatch available.', color: 'text-[#FF80C7]' },
   { icon: Shield, title: 'Vet Approved Products', desc: 'Every product is reviewed by licensed veterinarians for safety.', color: 'text-[#38BDF8]' },
   { icon: Heart, title: 'Happiness Guarantee', desc: 'Not satisfied? We offer hassle-free returns within 30 days.', color: 'text-[#F97316]' },
 ];
@@ -73,7 +73,7 @@ const SectionHeader = ({ subtitle, title, align = 'center' }) => (
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="inline-block px-4 py-1.5 rounded-full bg-[#22C55E]/10 text-[#22C55E] text-sm font-semibold tracking-wide uppercase mb-3"
+      className="inline-block px-4 py-1.5 rounded-full bg-[#FF80C7]/10 text-[#FF80C7] text-sm font-semibold tracking-wide uppercase mb-3"
     >
       {subtitle}
     </motion.span>
@@ -94,7 +94,7 @@ const ProductCard = ({ product }) => {
     <motion.div 
       variants={itemVariants}
       whileHover={{ y: -8 }}
-      className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#22C55E]/5 transition-all duration-300"
+      className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300"
     >
       <div className="relative aspect-square bg-[#F8FAFC] overflow-hidden">
         {/* Placeholder for Product Image */}
@@ -120,7 +120,7 @@ const ProductCard = ({ product }) => {
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <motion.button
             whileTap={{ scale: 0.95 }}
-            className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
+            className="w-full bg-[#FF80C7] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
           >
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
@@ -134,7 +134,7 @@ const ProductCard = ({ product }) => {
           <span className="text-sm font-medium text-[#1F2937]">{product.rating}</span>
           <span className="text-sm text-gray-400">({product.reviews})</span>
         </div>
-        <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#22C55E] transition-colors line-clamp-2">
+        <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#FF80C7] transition-colors line-clamp-2">
           {product.name}
         </h3>
         <div className="flex items-center justify-between">
@@ -150,7 +150,7 @@ const ProductCard = ({ product }) => {
 const HeroSection = () => (
   <section className="relative pt-22 pb-20 md:pt-25 md:pb-32 overflow-hidden bg-[#F8FAFC]">
     {/* Background Decorations */}
-    <div className="absolute top-20 right-0 w-96 h-96 bg-[#22C55E]/5 rounded-full blur-3xl" />
+    <div className="absolute top-20 right-0 w-96 h-96 bg-[#FF80C7]/5 rounded-full blur-3xl" />
     <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#38BDF8]/5 rounded-full blur-3xl" />
     
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -160,17 +160,17 @@ const HeroSection = () => (
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#22C55E]/10 text-[#22C55E] rounded-full text-sm font-semibold mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF80C7]/10 text-[#FF80C7] rounded-full text-sm font-semibold mb-6">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF80C7] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF80C7]"></span>
             </span>
             New Summer Collection Available
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#1F2937] leading-[1.1] mb-6">
             Everything Your <br />
-            <span className="text-[#22C55E]">Furry Friend</span> <br />
+            <span className="text-[#FF80C7]">Furry Friend</span> <br />
             Deserves
           </h1>
           
@@ -183,7 +183,7 @@ const HeroSection = () => (
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
                 to="/shop" 
-                className="inline-flex items-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-[#22C55E]/25 transition-colors"
+                className="inline-flex items-center gap-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-[#FF80C7]/25 transition-colors"
               >
                 Shop Now
                 <ArrowRight className="w-5 h-5" />
@@ -224,7 +224,7 @@ const HeroSection = () => (
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative hidden lg:block"
         >
-          <div className="relative z-10 bg-linear-to-br from-[#22C55E]/20 to-[#38BDF8]/20 rounded-[2.5rem]">
+          <div className="relative z-10 bg-linear-to-br from-[#FF80C7]/20 to-[#38BDF8]/20 rounded-[2.5rem]">
             <div className="h-110 bg-white rounded-3xl shadow-2xl overflow-hidden relative">
                {/* Placeholder Hero Image */}
                <div className="absolute inset-0  bg-linear-to-br from-[#F8FAFC] to-gray-100 flex items-center justify-center">
@@ -238,8 +238,8 @@ const HeroSection = () => (
                  className="absolute top-[-20px] z-1000 left-1 bg-white p-4 rounded-2xl shadow-xl border border-[#E5E7EB]"
                >
                  <div className="flex items-center gap-3">
-                   <div className="bg-[#22C55E]/10 p-2 rounded-lg">
-                     <Truck className="w-5 h-5 text-[#22C55E]" />
+                   <div className="bg-[#FF80C7]/10 p-2 rounded-lg">
+                     <Truck className="w-5 h-5 text-[#FF80C7]" />
                    </div>
                    <div>
                      <p className="text-xs text-gray-500">Delivery</p>
@@ -290,12 +290,12 @@ const CategoriesSection = () => {
             <motion.div key={cat.name} variants={itemVariants}>
               <Link 
                 to={`/shop/${cat.name.toLowerCase()}`}
-                className="group block p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#22C55E] hover:shadow-lg hover:shadow-[#22C55E]/5 transition-all duration-300 bg-white"
+                className="group block p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
               >
                 <div className={`w-14 h-14 rounded-xl ${cat.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <cat.icon className="w-7 h-7" />
                 </div>
-                <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#22C55E] transition-colors">{cat.name}</h3>
+                <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#FF80C7] transition-colors">{cat.name}</h3>
                 <p className="text-sm text-gray-500">{cat.count}</p>
               </Link>
             </motion.div>
@@ -340,7 +340,7 @@ const FeaturedSection = () => {
           >
             <Link 
               to="/shop" 
-              className="inline-flex items-center gap-2 text-[#22C55E] font-semibold hover:text-[#16A34A] transition-colors group"
+              className="inline-flex items-center gap-2 text-[#FF80C7] font-semibold hover:text-[#16A34A] transition-colors group"
             >
               View All Products
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -384,7 +384,7 @@ const WhyChooseSection = () => {
               key={feature.title}
               variants={itemVariants}
               whileHover={{ y: -5 }}
-              className="p-8 rounded-3xl bg-[#F8FAFC] border border-[#E5E7EB] hover:border-[#22C55E]/30 hover:shadow-xl hover:shadow-[#22C55E]/5 transition-all duration-300"
+              className="p-8 rounded-3xl bg-[#F8FAFC] border border-[#E5E7EB] hover:border-[#FF80C7]/30 hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300"
             >
               <div className={`w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6 ${feature.color}`}>
                 <feature.icon className="w-7 h-7" />
@@ -431,7 +431,7 @@ const TestimonialsSection = () => {
               </div>
               <p className="text-[#1F2937] mb-6 leading-relaxed italic">"{t.text}"</p>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#22C55E] to-[#16A34A] flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF80C7] to-[#16A34A] flex items-center justify-center text-white font-bold text-lg">
                   {t.name[0]}
                 </div>
                 <div>
@@ -455,7 +455,7 @@ const NewsletterSection = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#22C55E] to-[#16A34A] p-12 md:p-20 text-center"
+        className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#FF80C7] to-[#16A34A] p-12 md:p-20 text-center"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -478,7 +478,7 @@ const NewsletterSection = () => (
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-white text-[#22C55E] rounded-full font-bold hover:bg-gray-50 transition-colors shadow-lg"
+              className="px-8 py-4 bg-white text-[#FF80C7] rounded-full font-bold hover:bg-gray-50 transition-colors shadow-lg"
             >
               Subscribe
             </motion.button>

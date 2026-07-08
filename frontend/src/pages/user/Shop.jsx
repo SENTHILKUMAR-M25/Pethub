@@ -58,7 +58,7 @@ const TagBadge = ({ tag }) => {
   const colors = {
     'Best Seller': 'bg-[#F97316] text-white',
     'New': 'bg-[#38BDF8] text-white',
-    'Popular': 'bg-[#22C55E] text-white',
+    'Popular': 'bg-[#FF80C7] text-white',
     'Sale': 'bg-red-500 text-white',
   };
   return tag ? (
@@ -108,7 +108,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
           <div className="p-8 md:p-10 flex flex-col">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <p className="text-sm text-[#22C55E] font-semibold mb-1">{product.category} • {product.brand}</p>
+                <p className="text-sm text-[#FF80C7] font-semibold mb-1">{product.category} • {product.brand}</p>
                 <h2 className="text-2xl md:text-3xl font-bold text-[#1F2937]">{product.name}</h2>
               </div>
               <button 
@@ -121,7 +121,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
 
             <div className="flex items-center gap-4 mb-6">
               <StarRating rating={product.rating} reviews={product.reviews} size="md" />
-              <span className="text-sm text-[#22C55E] font-medium flex items-center gap-1">
+              <span className="text-sm text-[#FF80C7] font-medium flex items-center gap-1">
                 <Check className="w-4 h-4" /> In Stock
               </span>
             </div>
@@ -166,7 +166,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => { onAddToCart(product, quantity); onClose(); }}
-                  className="flex-1 bg-[#22C55E] hover:bg-[#16A34A] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#22C55E]/25 transition-colors"
+                  className="flex-1 bg-[#FF80C7] hover:bg-[#16A34A] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-[#FF80C7]/25 transition-colors"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   Add to Cart
@@ -197,7 +197,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => (
     exit={{ opacity: 0, scale: 0.9 }}
     transition={{ duration: 0.3 }}
     whileHover={{ y: -6 }}
-    className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#22C55E]/5 transition-all duration-300"
+    className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300"
   >
     <div className="relative aspect-square bg-[#F8FAFC] overflow-hidden">
       <ImagePlaceholder icon={PawPrint} className="w-full h-full" />
@@ -215,7 +215,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => (
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => onQuickView(product)}
-          className="p-2.5 bg-white rounded-full shadow-lg text-[#1F2937] hover:text-[#22C55E] transition-colors"
+          className="p-2.5 bg-white rounded-full shadow-lg text-[#1F2937] hover:text-[#FF80C7] transition-colors"
         >
           <Eye className="w-4 h-4" />
         </motion.button>
@@ -234,7 +234,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => (
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => onAddToCart(product, 1)}
-            className="w-full bg-[#22C55E] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
+            className="w-full bg-[#FF80C7] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
           >
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
@@ -244,8 +244,8 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => (
     </div>
 
     <div className="p-5">
-      <p className="text-xs text-[#22C55E] font-semibold mb-1">{product.category}</p>
-      <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#22C55E] transition-colors line-clamp-2">
+      <p className="text-xs text-[#FF80C7] font-semibold mb-1">{product.category}</p>
+      <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#FF80C7] transition-colors line-clamp-2">
         {product.name}
       </h3>
       <StarRating rating={product.rating} reviews={product.reviews} />
@@ -268,7 +268,7 @@ const ProductCardList = ({ product, onQuickView, onAddToCart }) => (
     exit={{ opacity: 0, x: -20 }}
     transition={{ duration: 0.3 }}
     whileHover={{ x: 4 }}
-    className="group bg-white rounded-2xl border border-[#E5E7EB] p-4 hover:shadow-lg hover:shadow-[#22C55E]/5 transition-all duration-300 flex gap-6"
+    className="group bg-white rounded-2xl border border-[#E5E7EB] p-4 hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 flex gap-6"
   >
     <div className="relative w-48 h-48 flex-shrink-0 rounded-xl overflow-hidden bg-[#F8FAFC]">
       <ImagePlaceholder icon={PawPrint} className="w-full h-full" />
@@ -284,8 +284,8 @@ const ProductCardList = ({ product, onQuickView, onAddToCart }) => (
       <div>
         <div className="flex items-start justify-between mb-2">
           <div>
-            <p className="text-sm text-[#22C55E] font-semibold mb-1">{product.category} • {product.brand}</p>
-            <h3 className="text-xl font-bold text-[#1F2937] group-hover:text-[#22C55E] transition-colors">
+            <p className="text-sm text-[#FF80C7] font-semibold mb-1">{product.category} • {product.brand}</p>
+            <h3 className="text-xl font-bold text-[#1F2937] group-hover:text-[#FF80C7] transition-colors">
               {product.name}
             </h3>
           </div>
@@ -317,7 +317,7 @@ const ProductCardList = ({ product, onQuickView, onAddToCart }) => (
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onAddToCart(product, 1)}
-            className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-colors shadow-lg shadow-[#22C55E]/20"
+            className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-colors shadow-lg shadow-[#FF80C7]/20"
           >
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
@@ -471,7 +471,7 @@ const Shop = () => {
             exit={{ opacity: 0, y: -50, x: '-50%' }}
             className="fixed top-24 left-1/2 z-50 bg-[#1F2937] text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-3"
           >
-            <Check className="w-5 h-5 text-[#22C55E]" />
+            <Check className="w-5 h-5 text-[#FF80C7]" />
             <span className="font-medium">Added to cart! ({cart.reduce((a, b) => a + b.quantity, 0)} items)</span>
           </motion.div>
         )}
@@ -496,13 +496,13 @@ const Shop = () => {
           className="mb-8"
         >
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-            <Link to="/" className="hover:text-[#22C55E] transition-colors">Home</Link>
+            <Link to="/" className="hover:text-[#FF80C7] transition-colors">Home</Link>
             <ChevronDown className="w-3 h-3 -rotate-90" />
             <span className="text-[#1F2937] font-medium">Shop</span>
             {selectedCategory !== 'All' && (
               <>
                 <ChevronDown className="w-3 h-3 -rotate-90" />
-                <span className="text-[#22C55E] font-medium">{selectedCategory}</span>
+                <span className="text-[#FF80C7] font-medium">{selectedCategory}</span>
               </>
             )}
           </div>
@@ -523,7 +523,7 @@ const Shop = () => {
                 placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-[#E5E7EB] focus:border-[#22C55E] focus:outline-none transition-colors bg-white"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-[#E5E7EB] focus:border-[#FF80C7] focus:outline-none transition-colors bg-white"
               />
               {searchQuery && (
                 <button 
@@ -561,7 +561,7 @@ const Shop = () => {
                 <div className="space-y-2">
                   {CATEGORIES.map(cat => (
                     <label key={cat} className="flex items-center gap-3 cursor-pointer group">
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedCategory === cat ? 'bg-[#22C55E] border-[#22C55E]' : 'border-[#E5E7EB] group-hover:border-[#22C55E]'}`}>
+                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedCategory === cat ? 'bg-[#FF80C7] border-[#FF80C7]' : 'border-[#E5E7EB] group-hover:border-[#FF80C7]'}`}>
                         {selectedCategory === cat && <Check className="w-3 h-3 text-white" />}
                       </div>
                       <input 
@@ -571,7 +571,7 @@ const Shop = () => {
                         checked={selectedCategory === cat}
                         onChange={() => setSelectedCategory(cat)}
                       />
-                      <span className={`text-sm ${selectedCategory === cat ? 'font-semibold text-[#22C55E]' : 'text-gray-600'}`}>{cat}</span>
+                      <span className={`text-sm ${selectedCategory === cat ? 'font-semibold text-[#FF80C7]' : 'text-gray-600'}`}>{cat}</span>
                     </label>
                   ))}
                 </div>
@@ -582,7 +582,7 @@ const Shop = () => {
                 <div className="space-y-2">
                   {PRICE_RANGES.map(range => (
                     <label key={range.label} className="flex items-center gap-3 cursor-pointer group">
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedPriceRanges.includes(range) ? 'bg-[#22C55E] border-[#22C55E]' : 'border-[#E5E7EB] group-hover:border-[#22C55E]'}`}>
+                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedPriceRanges.includes(range) ? 'bg-[#FF80C7] border-[#FF80C7]' : 'border-[#E5E7EB] group-hover:border-[#FF80C7]'}`}>
                         {selectedPriceRanges.includes(range) && <Check className="w-3 h-3 text-white" />}
                       </div>
                       <input 
@@ -591,7 +591,7 @@ const Shop = () => {
                         checked={selectedPriceRanges.includes(range)}
                         onChange={() => togglePriceRange(range)}
                       />
-                      <span className={`text-sm ${selectedPriceRanges.includes(range) ? 'font-semibold text-[#22C55E]' : 'text-gray-600'}`}>{range.label}</span>
+                      <span className={`text-sm ${selectedPriceRanges.includes(range) ? 'font-semibold text-[#FF80C7]' : 'text-gray-600'}`}>{range.label}</span>
                     </label>
                   ))}
                 </div>
@@ -602,7 +602,7 @@ const Shop = () => {
                 <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                   {BRANDS.map(brand => (
                     <label key={brand} className="flex items-center gap-3 cursor-pointer group">
-                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedBrands.includes(brand) ? 'bg-[#22C55E] border-[#22C55E]' : 'border-[#E5E7EB] group-hover:border-[#22C55E]'}`}>
+                      <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedBrands.includes(brand) ? 'bg-[#FF80C7] border-[#FF80C7]' : 'border-[#E5E7EB] group-hover:border-[#FF80C7]'}`}>
                         {selectedBrands.includes(brand) && <Check className="w-3 h-3 text-white" />}
                       </div>
                       <input 
@@ -611,7 +611,7 @@ const Shop = () => {
                         checked={selectedBrands.includes(brand)}
                         onChange={() => toggleBrand(brand)}
                       />
-                      <span className={`text-sm ${selectedBrands.includes(brand) ? 'font-semibold text-[#22C55E]' : 'text-gray-600'}`}>{brand}</span>
+                      <span className={`text-sm ${selectedBrands.includes(brand) ? 'font-semibold text-[#FF80C7]' : 'text-gray-600'}`}>{brand}</span>
                     </label>
                   ))}
                 </div>
@@ -631,12 +631,12 @@ const Shop = () => {
                 {/* Mobile Filter Button */}
                 <button 
                   onClick={() => setShowMobileFilters(true)}
-                  className="lg:hidden flex items-center gap-2 px-4 py-2.5 border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] font-medium hover:border-[#22C55E] transition-colors"
+                  className="lg:hidden flex items-center gap-2 px-4 py-2.5 border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] font-medium hover:border-[#FF80C7] transition-colors"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
                   Filters
                   {activeFiltersCount > 0 && (
-                    <span className="bg-[#22C55E] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    <span className="bg-[#FF80C7] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                       {activeFiltersCount}
                     </span>
                   )}
@@ -653,7 +653,7 @@ const Shop = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-[#1F2937] focus:outline-none focus:border-[#22C55E] cursor-pointer"
+                    className="appearance-none bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-[#1F2937] focus:outline-none focus:border-[#FF80C7] cursor-pointer"
                   >
                     <option value="featured">Featured</option>
                     <option value="price-low">Price: Low to High</option>
@@ -668,13 +668,13 @@ const Shop = () => {
                 <div className="flex border-2 border-[#E5E7EB] rounded-xl overflow-hidden">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-[#22C55E] text-white' : 'bg-white text-gray-400 hover:text-[#22C55E]'}`}
+                    className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-[#FF80C7] text-white' : 'bg-white text-gray-400 hover:text-[#FF80C7]'}`}
                   >
                     <Grid3X3 className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-2.5 transition-colors ${viewMode === 'list' ? 'bg-[#22C55E] text-white' : 'bg-white text-gray-400 hover:text-[#22C55E]'}`}
+                    className={`p-2.5 transition-colors ${viewMode === 'list' ? 'bg-[#FF80C7] text-white' : 'bg-white text-gray-400 hover:text-[#FF80C7]'}`}
                   >
                     <List className="w-5 h-5" />
                   </button>
@@ -690,9 +690,9 @@ const Shop = () => {
                 className="flex flex-wrap gap-2 mb-6"
               >
                 {selectedCategory !== 'All' && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#22C55E]/10 text-[#22C55E] rounded-full text-sm font-medium">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FF80C7]/10 text-[#FF80C7] rounded-full text-sm font-medium">
                     {selectedCategory}
-                    <button onClick={() => setSelectedCategory('All')} className="hover:bg-[#22C55E]/20 rounded-full p-0.5">
+                    <button onClick={() => setSelectedCategory('All')} className="hover:bg-[#FF80C7]/20 rounded-full p-0.5">
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -759,7 +759,7 @@ const Shop = () => {
                 <p className="text-gray-500 mb-6">Try adjusting your filters or search query</p>
                 <button 
                   onClick={clearFilters}
-                  className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+                  className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold transition-colors"
                 >
                   Clear all filters
                 </button>
@@ -772,7 +772,7 @@ const Shop = () => {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="bg-white border-2 border-[#E5E7EB] hover:border-[#22C55E] text-[#1F2937] hover:text-[#22C55E] px-8 py-3 rounded-xl font-semibold transition-colors"
+                  className="bg-white border-2 border-[#E5E7EB] hover:border-[#FF80C7] text-[#1F2937] hover:text-[#FF80C7] px-8 py-3 rounded-xl font-semibold transition-colors"
                 >
                   Load More Products
                 </motion.button>
@@ -814,7 +814,7 @@ const Shop = () => {
                   <div className="space-y-2">
                     {CATEGORIES.map(cat => (
                       <label key={cat} className="flex items-center gap-3 cursor-pointer">
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${selectedCategory === cat ? 'bg-[#22C55E] border-[#22C55E]' : 'border-[#E5E7EB]'}`}>
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${selectedCategory === cat ? 'bg-[#FF80C7] border-[#FF80C7]' : 'border-[#E5E7EB]'}`}>
                           {selectedCategory === cat && <Check className="w-3 h-3 text-white" />}
                         </div>
                         <input type="radio" name="mobile-category" className="hidden" checked={selectedCategory === cat} onChange={() => setSelectedCategory(cat)} />
@@ -830,7 +830,7 @@ const Shop = () => {
                   <div className="space-y-2">
                     {PRICE_RANGES.map(range => (
                       <label key={range.label} className="flex items-center gap-3 cursor-pointer">
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${selectedPriceRanges.includes(range) ? 'bg-[#22C55E] border-[#22C55E]' : 'border-[#E5E7EB]'}`}>
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${selectedPriceRanges.includes(range) ? 'bg-[#FF80C7] border-[#FF80C7]' : 'border-[#E5E7EB]'}`}>
                           {selectedPriceRanges.includes(range) && <Check className="w-3 h-3 text-white" />}
                         </div>
                         <input type="checkbox" className="hidden" checked={selectedPriceRanges.includes(range)} onChange={() => togglePriceRange(range)} />
@@ -846,7 +846,7 @@ const Shop = () => {
                   <div className="space-y-2">
                     {BRANDS.map(brand => (
                       <label key={brand} className="flex items-center gap-3 cursor-pointer">
-                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${selectedBrands.includes(brand) ? 'bg-[#22C55E] border-[#22C55E]' : 'border-[#E5E7EB]'}`}>
+                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center ${selectedBrands.includes(brand) ? 'bg-[#FF80C7] border-[#FF80C7]' : 'border-[#E5E7EB]'}`}>
                           {selectedBrands.includes(brand) && <Check className="w-3 h-3 text-white" />}
                         </div>
                         <input type="checkbox" className="hidden" checked={selectedBrands.includes(brand)} onChange={() => toggleBrand(brand)} />
@@ -860,7 +860,7 @@ const Shop = () => {
               <div className="p-6 border-t border-[#E5E7EB] space-y-3 sticky bottom-0 bg-white">
                 <button 
                   onClick={() => setShowMobileFilters(false)}
-                  className="w-full bg-[#22C55E] text-white py-3 rounded-xl font-bold"
+                  className="w-full bg-[#FF80C7] text-white py-3 rounded-xl font-bold"
                 >
                   Show {filteredProducts.length} Results
                 </button>

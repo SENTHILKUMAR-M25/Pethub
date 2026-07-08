@@ -49,9 +49,9 @@ const EmptyCart = () => (
     <motion.div 
       animate={{ y: [0, -10, 0] }}
       transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-      className="w-32 h-32 bg-[#22C55E]/10 rounded-full flex items-center justify-center mx-auto mb-8"
+      className="w-32 h-32 bg-[#FF80C7]/10 rounded-full flex items-center justify-center mx-auto mb-8"
     >
-      <ShoppingCart className="w-16 h-16 text-[#22C55E]" />
+      <ShoppingCart className="w-16 h-16 text-[#FF80C7]" />
     </motion.div>
     <h2 className="text-3xl font-bold text-[#1F2937] mb-4">Your cart is empty</h2>
     <p className="text-gray-500 mb-8 max-w-md mx-auto">
@@ -60,7 +60,7 @@ const EmptyCart = () => (
     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
       <Link 
         to="/shop" 
-        className="inline-flex items-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-[#22C55E]/25 transition-colors"
+        className="inline-flex items-center gap-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-[#FF80C7]/25 transition-colors"
       >
         <ArrowLeft className="w-5 h-5" />
         Continue Shopping
@@ -95,7 +95,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onMoveToSaved }) => {
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs text-[#22C55E] font-semibold mb-1">{item.category}</p>
+            <p className="text-xs text-[#FF80C7] font-semibold mb-1">{item.category}</p>
             <h3 className="font-bold text-[#1F2937] mb-1 truncate">{item.name}</h3>
             <p className="text-sm text-gray-500">{item.weight}</p>
           </div>
@@ -177,13 +177,13 @@ const SavedItem = ({ item, onMoveToCart, onRemove }) => (
     </div>
     <div className="flex-1 min-w-0">
       <h4 className="font-semibold text-[#1F2937] text-sm truncate">{item.name}</h4>
-      <p className="text-[#22C55E] font-bold text-sm">${item.price}</p>
+      <p className="text-[#FF80C7] font-bold text-sm">${item.price}</p>
     </div>
     <div className="flex items-center gap-2">
       <motion.button
         whileTap={{ scale: 0.95 }}
         onClick={() => onMoveToCart(item)}
-        className="px-4 py-2 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-lg text-sm font-semibold transition-colors"
+        className="px-4 py-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white rounded-lg text-sm font-semibold transition-colors"
       >
         Move to Cart
       </motion.button>
@@ -303,22 +303,22 @@ const Cart = () => {
           className="mb-8"
         >
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-            <Link to="/" className="hover:text-[#22C55E] transition-colors">Home</Link>
+            <Link to="/" className="hover:text-[#FF80C7] transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3" />
-            <Link to="/shop" className="hover:text-[#22C55E] transition-colors">Shop</Link>
+            <Link to="/shop" className="hover:text-[#FF80C7] transition-colors">Shop</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-[#1F2937] font-medium">Cart</span>
           </div>
           
           <div className="flex items-center justify-between">
             <h1 className="text-4xl font-bold text-[#1F2937] flex items-center gap-3">
-              <ShoppingCart className="w-8 h-8 text-[#22C55E]" />
+              <ShoppingCart className="w-8 h-8 text-[#FF80C7]" />
               Shopping Cart
               <span className="text-2xl text-gray-400 font-normal">({cartItems.reduce((a, b) => a + b.quantity, 0)} items)</span>
             </h1>
             <Link 
               to="/shop" 
-              className="hidden sm:flex items-center gap-2 text-[#22C55E] font-semibold hover:text-[#16A34A] transition-colors"
+              className="hidden sm:flex items-center gap-2 text-[#FF80C7] font-semibold hover:text-[#16A34A] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Continue Shopping
@@ -352,7 +352,7 @@ const Cart = () => {
                   <p className="text-gray-500 mb-4">Your cart is empty</p>
                   <Link 
                     to="/shop" 
-                    className="text-[#22C55E] font-semibold hover:text-[#16A34A] transition-colors"
+                    className="text-[#FF80C7] font-semibold hover:text-[#16A34A] transition-colors"
                   >
                     Continue Shopping
                   </Link>
@@ -398,7 +398,7 @@ const Cart = () => {
                   whileHover={{ y: -4 }}
                   className="bg-white rounded-xl border border-[#E5E7EB] p-4 text-center"
                 >
-                  <badge.icon className="w-6 h-6 text-[#22C55E] mx-auto mb-2" />
+                  <badge.icon className="w-6 h-6 text-[#FF80C7] mx-auto mb-2" />
                   <p className="font-semibold text-sm text-[#1F2937]">{badge.title}</p>
                   <p className="text-xs text-gray-500">{badge.desc}</p>
                 </motion.div>
@@ -421,7 +421,7 @@ const Cart = () => {
                 {/* Shipping Options */}
                 <div className="space-y-3 mb-6">
                   <p className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-[#22C55E]" />
+                    <Truck className="w-4 h-4 text-[#FF80C7]" />
                     Shipping Method
                   </p>
                   {SHIPPING_OPTIONS.map(option => (
@@ -431,14 +431,14 @@ const Cart = () => {
                       onClick={() => setShippingOption(option.id)}
                       className={`w-full flex items-center gap-3 p-3 rounded-xl border-2 transition-all ${
                         shippingOption === option.id 
-                          ? 'border-[#22C55E] bg-[#22C55E]/5' 
+                          ? 'border-[#FF80C7] bg-[#FF80C7]/5' 
                           : 'border-[#E5E7EB] hover:border-gray-300'
                       }`}
                     >
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                        shippingOption === option.id ? 'border-[#22C55E]' : 'border-gray-300'
+                        shippingOption === option.id ? 'border-[#FF80C7]' : 'border-gray-300'
                       }`}>
-                        {shippingOption === option.id && <div className="w-2.5 h-2.5 rounded-full bg-[#22C55E]" />}
+                        {shippingOption === option.id && <div className="w-2.5 h-2.5 rounded-full bg-[#FF80C7]" />}
                       </div>
                       <div className="flex-1 text-left">
                         <p className="font-semibold text-sm text-[#1F2937]">{option.name}</p>
@@ -467,23 +467,23 @@ const Cart = () => {
                         value={couponCode}
                         onChange={(e) => { setCouponCode(e.target.value); setCouponError(''); }}
                         placeholder="Enter code"
-                        className="flex-1 px-4 py-2.5 border-2 border-[#E5E7EB] rounded-xl text-sm focus:outline-none focus:border-[#22C55E] uppercase"
+                        className="flex-1 px-4 py-2.5 border-2 border-[#E5E7EB] rounded-xl text-sm focus:outline-none focus:border-[#FF80C7] uppercase"
                         onKeyPress={(e) => e.key === 'Enter' && applyCoupon()}
                       />
                       <motion.button
                         whileTap={{ scale: 0.95 }}
                         onClick={applyCoupon}
-                        className="px-4 py-2.5 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-sm font-semibold text-[#1F2937] hover:border-[#22C55E] hover:text-[#22C55E] transition-colors"
+                        className="px-4 py-2.5 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-sm font-semibold text-[#1F2937] hover:border-[#FF80C7] hover:text-[#FF80C7] transition-colors"
                       >
                         Apply
                       </motion.button>
                     </div>
                   ) : (
-                    <div className="flex items-center justify-between p-3 bg-[#22C55E]/10 rounded-xl border border-[#22C55E]/20">
+                    <div className="flex items-center justify-between p-3 bg-[#FF80C7]/10 rounded-xl border border-[#FF80C7]/20">
                       <div className="flex items-center gap-2">
-                        <Check className="w-4 h-4 text-[#22C55E]" />
-                        <span className="font-semibold text-[#22C55E] text-sm">{appliedCoupon.code}</span>
-                        <span className="text-xs text-[#22C55E]/70">
+                        <Check className="w-4 h-4 text-[#FF80C7]" />
+                        <span className="font-semibold text-[#FF80C7] text-sm">{appliedCoupon.code}</span>
+                        <span className="text-xs text-[#FF80C7]/70">
                           {appliedCoupon.type === 'percent' ? `-${(appliedCoupon.discount * 100).toFixed(0)}%` : `-$${appliedCoupon.discount}`}
                         </span>
                       </div>
@@ -513,13 +513,13 @@ const Cart = () => {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Shipping</span>
                     <span className="font-medium text-[#1F2937]">
-                      {shippingCost === 0 ? <span className="text-[#22C55E]">FREE</span> : `$${shippingCost.toFixed(2)}`}
+                      {shippingCost === 0 ? <span className="text-[#FF80C7]">FREE</span> : `$${shippingCost.toFixed(2)}`}
                     </span>
                   </div>
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-[#22C55E]">Discount</span>
-                      <span className="font-medium text-[#22C55E]">-${discountAmount.toFixed(2)}</span>
+                      <span className="text-[#FF80C7]">Discount</span>
+                      <span className="font-medium text-[#FF80C7]">-${discountAmount.toFixed(2)}</span>
                     </div>
                   )}
                   {totalSavings > 0 && (
@@ -545,7 +545,7 @@ const Cart = () => {
                   whileTap={{ scale: 0.98 }}
                   onClick={handleCheckout}
                   disabled={cartItems.length === 0 || isCheckingOut}
-                  className="w-full bg-[#22C55E] hover:bg-[#16A34A] disabled:bg-gray-300 text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-xl shadow-[#22C55E]/25 transition-colors disabled:shadow-none"
+                  className="w-full bg-[#FF80C7] hover:bg-[#16A34A] disabled:bg-gray-300 text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-xl shadow-[#FF80C7]/25 transition-colors disabled:shadow-none"
                 >
                   {isCheckingOut ? (
                     <motion.div
@@ -573,21 +573,21 @@ const Cart = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="bg-gradient-to-r from-[#22C55E]/10 to-[#38BDF8]/10 rounded-2xl border border-[#22C55E]/20 p-6"
+                  className="bg-gradient-to-r from-[#FF80C7]/10 to-[#38BDF8]/10 rounded-2xl border border-[#FF80C7]/20 p-6"
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <Truck className="w-5 h-5 text-[#22C55E]" />
+                    <Truck className="w-5 h-5 text-[#FF80C7]" />
                     <span className="font-bold text-[#1F2937]">Free Shipping Available!</span>
                   </div>
                   <p className="text-sm text-gray-600 mb-3">
-                    Add <span className="font-bold text-[#22C55E]">${(35 - subtotal).toFixed(2)}</span> more for free standard shipping
+                    Add <span className="font-bold text-[#FF80C7]">${(35 - subtotal).toFixed(2)}</span> more for free standard shipping
                   </p>
                   <div className="w-full h-2 bg-white rounded-full overflow-hidden">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.min((subtotal / 35) * 100, 100)}%` }}
                       transition={{ duration: 0.8, ease: "easeOut" }}
-                      className="h-full bg-gradient-to-r from-[#22C55E] to-[#38BDF8] rounded-full"
+                      className="h-full bg-gradient-to-r from-[#FF80C7] to-[#38BDF8] rounded-full"
                     />
                   </div>
                   <p className="text-xs text-gray-500 mt-2">{((subtotal / 35) * 100).toFixed(0)}% progress</p>
@@ -605,7 +605,7 @@ const Cart = () => {
                 </p>
                 <Link 
                   to="/contact" 
-                  className="text-sm font-semibold text-[#22C55E] hover:text-[#16A34A] transition-colors"
+                  className="text-sm font-semibold text-[#FF80C7] hover:text-[#16A34A] transition-colors"
                 >
                   Contact Support →
                 </Link>

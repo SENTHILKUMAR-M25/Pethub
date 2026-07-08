@@ -73,12 +73,12 @@ const Navbar = () => {
               <motion.div
                 whileHover={{ rotate: [0, -10, 10, 0] }}
                 transition={{ duration: 0.5 }}
-                className="bg-[#22C55E] p-2 rounded-xl"
+                className="bg-[#FF80C7] p-2 rounded-xl"
               >
                 <PawPrint className="w-6 h-6 text-white" />
               </motion.div>
               <span className="text-2xl font-bold text-[#1F2937] tracking-tight">
-                Jod<span className="text-[#22C55E]">Pet</span>Hub
+                Jod<span className="text-[#FF80C7]">Pet</span>Hub
               </span>
             </Link>
 
@@ -92,13 +92,13 @@ const Navbar = () => {
                     to={link.path}
                     className="relative px-4 py-2 text-sm font-medium transition-colors duration-200 group"
                   >
-                    <span className={isActive ? 'text-[#22C55E]' : 'text-[#1F2937] group-hover:text-[#22C55E]'}>
+                    <span className={isActive ? 'text-[#FF80C7]' : 'text-[#1F2937] group-hover:text-[#FF80C7]'}>
                       {link.name}
                     </span>
                     {isActive && (
                       <motion.div
                         layoutId="navbar-active"
-                        className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#22C55E] rounded-full"
+                        className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#FF80C7] rounded-full"
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -112,7 +112,7 @@ const Navbar = () => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2.5 rounded-full text-[#1F2937] hover:bg-[#22C55E]/10 hover:text-[#22C55E] transition-colors"
+                className="p-2.5 rounded-full text-[#1F2937] hover:bg-[#FF80C7]/10 hover:text-[#FF80C7] transition-colors"
               >
                 <Search className="w-5 h-5" />
               </motion.button>
@@ -128,7 +128,7 @@ const Navbar = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative flex items-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-colors shadow-lg shadow-[#22C55E]/25"
+                className="relative flex items-center gap-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white px-5 py-2.5 rounded-full font-semibold text-sm transition-colors shadow-lg shadow-[#FF80C7]/25"
               >
                 <Link to="/cart" className="flex items-center gap-2">
                 <ShoppingCart className="w-5 h-5" />
@@ -175,11 +175,11 @@ const Navbar = () => {
               {/* Drawer Header */}
               <div className="flex items-center justify-between p-6 border-b border-[#E5E7EB]">
                 <div className="flex items-center gap-2">
-                  <div className="bg-[#22C55E] p-1.5 rounded-lg">
+                  <div className="bg-[#FF80C7] p-1.5 rounded-lg">
                     <PawPrint className="w-5 h-5 text-white" />
                   </div>
                   <span className="text-xl font-bold text-[#1F2937]">
-                    Jod<span className="text-[#22C55E]">Pet</span>Hub
+                    Jod<span className="text-[#FF80C7]">Pet</span>Hub
                   </span>
                 </div>
                 <motion.button
@@ -207,15 +207,15 @@ const Navbar = () => {
                           to={link.path}
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all ${
                             isActive
-                              ? 'bg-[#22C55E]/10 text-[#22C55E]'
-                              : 'text-[#1F2937] hover:bg-gray-50 hover:text-[#22C55E]'
+                              ? 'bg-[#FF80C7]/10 text-[#FF80C7]'
+                              : 'text-[#1F2937] hover:bg-gray-50 hover:text-[#FF80C7]'
                           }`}
                         >
                           {link.name}
                           {isActive && (
                             <motion.div
                               layoutId="mobile-active"
-                              className="ml-auto w-2 h-2 rounded-full bg-[#22C55E]"
+                              className="ml-auto w-2 h-2 rounded-full bg-[#FF80C7]"
                             />
                           )}
                         </Link>
@@ -229,7 +229,7 @@ const Navbar = () => {
               <div className="p-6 border-t border-[#E5E7EB] space-y-3">
                 <motion.button
                   whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center justify-center gap-2 bg-[#22C55E] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-[#22C55E]/20"
+                  className="w-full flex items-center justify-center gap-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-[#FF80C7]/20"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   <span>View Cart (3)</span>

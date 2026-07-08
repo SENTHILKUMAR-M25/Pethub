@@ -264,7 +264,7 @@ const initialState = {
 };
 
 const STATUS_OPTIONS = [
-  { value: "Active", label: "Active", color: "bg-[#22C55E]/10 text-[#22C55E] border-[#22C55E]/20" },
+  { value: "Active", label: "Active", color: "bg-[#FF80C7]/10 text-[#FF80C7] border-[#FF80C7]/20" },
   { value: "Inactive", label: "Inactive", color: "bg-gray-100 text-gray-500 border-gray-200" },
 ];
 
@@ -440,7 +440,7 @@ export default function Category() {
 
   const getStatusStyle = (status) => {
     return status === "Active"
-      ? "bg-[#22C55E]/10 text-[#22C55E] border border-[#22C55E]/20"
+      ? "bg-[#FF80C7]/10 text-[#FF80C7] border border-[#FF80C7]/20"
       : "bg-gray-100 text-gray-500 border border-gray-200";
   };
 
@@ -461,8 +461,8 @@ export default function Category() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-[#22C55E]/10 rounded-xl flex items-center justify-center">
-                <PawPrint className="w-5 h-5 text-[#22C55E]" />
+              <div className="w-10 h-10 bg-[#FF80C7]/10 rounded-xl flex items-center justify-center">
+                <PawPrint className="w-5 h-5 text-[#FF80C7]" />
               </div>
               <h1 className="text-3xl font-bold text-[#1F2937]">Categories</h1>
             </div>
@@ -472,7 +472,7 @@ export default function Category() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={openAddModal}
-            className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-[#22C55E]/20 transition-colors w-full sm:w-auto justify-center"
+            className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-[#FF80C7]/20 transition-colors w-full sm:w-auto justify-center"
           >
             <Plus className="w-5 h-5" />
             Add Category
@@ -495,7 +495,7 @@ export default function Category() {
               placeholder="Search categories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-10 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:border-[#22C55E] transition-colors"
+              className="w-full pl-12 pr-10 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:border-[#FF80C7] transition-colors"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -508,7 +508,7 @@ export default function Category() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="appearance-none pl-10 pr-10 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] focus:outline-none focus:border-[#22C55E] cursor-pointer min-w-[160px]"
+              className="appearance-none pl-10 pr-10 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] focus:outline-none focus:border-[#FF80C7] cursor-pointer min-w-[160px]"
             >
               <option value="All">All Status</option>
               <option value="Active">Active</option>
@@ -519,13 +519,13 @@ export default function Category() {
           <div className="flex border-2 border-[#E5E7EB] rounded-xl overflow-hidden">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-3 transition-colors ${viewMode === "grid" ? "bg-[#22C55E] text-white" : "bg-white text-gray-400 hover:text-[#22C55E]"}`}
+              className={`p-3 transition-colors ${viewMode === "grid" ? "bg-[#FF80C7] text-white" : "bg-white text-gray-400 hover:text-[#FF80C7]"}`}
             >
               <Grid3X3 className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-3 transition-colors ${viewMode === "list" ? "bg-[#22C55E] text-white" : "bg-white text-gray-400 hover:text-[#22C55E]"}`}
+              className={`p-3 transition-colors ${viewMode === "list" ? "bg-[#FF80C7] text-white" : "bg-white text-gray-400 hover:text-[#FF80C7]"}`}
             >
               <LayoutList className="w-5 h-5" />
             </button>
@@ -536,12 +536,12 @@ export default function Category() {
       {/* ========== CONTENT ========== */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-10 h-10 text-[#22C55E] animate-spin" />
+          <Loader2 className="w-10 h-10 text-[#FF80C7] animate-spin" />
         </div>
       ) : filteredCategories.length === 0 ? (
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-20">
-          <div className="w-20 h-20 bg-[#22C55E]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Search className="w-10 h-10 text-[#22C55E]" />
+          <div className="w-20 h-20 bg-[#FF80C7]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-10 h-10 text-[#FF80C7]" />
           </div>
           <h3 className="text-xl font-bold text-[#1F2937] mb-2">
             {searchQuery || statusFilter !== "All" ? "No categories found" : "No categories yet"}
@@ -551,7 +551,7 @@ export default function Category() {
           </p>
           {!searchQuery && statusFilter === "All" && (
             <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={openAddModal}
-              className="bg-[#22C55E] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2">
+              className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2">
               <Plus className="w-5 h-5" />
               Add Category
             </motion.button>
@@ -563,7 +563,7 @@ export default function Category() {
           <AnimatePresence>
             {filteredCategories.map((item) => (
               <motion.div key={item._id} variants={itemVariants} layout whileHover={{ y: -4 }}
-                className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#22C55E]/5 transition-all duration-300">
+                className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300">
                 <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {item.image ? (
                     <img src={`${import.meta.env.VITE_IMAGE_URL}${item.image}`} alt={item.name}
@@ -580,7 +580,7 @@ export default function Category() {
                   </div>
                 </div>
                 <div className="p-5">
-                  <h3 className="font-bold text-[#1F2937] text-lg mb-1 group-hover:text-[#22C55E] transition-colors">
+                  <h3 className="font-bold text-[#1F2937] text-lg mb-1 group-hover:text-[#FF80C7] transition-colors">
                     {item.name}
                   </h3>
                   <p className="text-gray-500 text-sm line-clamp-2 mb-4 min-h-[40px]">
@@ -638,7 +638,7 @@ export default function Category() {
                         </div>
                       </td>
                       <td className="p-4">
-                        <p className="font-semibold text-[#1F2937] group-hover:text-[#22C55E] transition-colors">{item.name}</p>
+                        <p className="font-semibold text-[#1F2937] group-hover:text-[#FF80C7] transition-colors">{item.name}</p>
                       </td>
                       <td className="p-4 hidden md:table-cell">
                         <p className="text-sm text-gray-500 line-clamp-2 max-w-xs">{item.description || "—"}</p>
@@ -720,7 +720,7 @@ export default function Category() {
                   <input
                     type="text" name="name" value={form.name} onChange={handleChange}
                     placeholder="e.g., Dog Food, Cat Toys..."
-                    className="w-full px-4 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:border-[#22C55E] transition-colors"
+                    className="w-full px-4 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:border-[#FF80C7] transition-colors"
                     required
                   />
                 </div>
@@ -731,7 +731,7 @@ export default function Category() {
                     name="description" value={form.description} onChange={handleChange}
                     placeholder="Brief description of this category..."
                     rows={3}
-                    className="w-full px-4 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:border-[#22C55E] transition-colors resize-none"
+                    className="w-full px-4 py-3 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] placeholder:text-gray-400 focus:outline-none focus:border-[#FF80C7] transition-colors resize-none"
                   />
                 </div>
 
@@ -764,8 +764,8 @@ export default function Category() {
                     onClick={() => fileInputRef.current?.click()}
                     className={`relative border-2 border-dashed rounded-xl p-6 cursor-pointer transition-colors text-center ${
                       preview
-                        ? "border-[#22C55E] bg-[#22C55E]/5"
-                        : "border-[#E5E7EB] hover:border-[#22C55E] hover:bg-[#22C55E]/5 bg-[#F8FAFC]"
+                        ? "border-[#FF80C7] bg-[#FF80C7]/5"
+                        : "border-[#E5E7EB] hover:border-[#FF80C7] hover:bg-[#FF80C7]/5 bg-[#F8FAFC]"
                     }`}
                   >
                     <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImage} className="hidden" />
@@ -805,7 +805,7 @@ export default function Category() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={isSubmitting}
-                    className="flex-1 py-3 px-4 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#22C55E]/20 transition-colors disabled:opacity-70"
+                    className="flex-1 py-3 px-4 bg-[#FF80C7] hover:bg-[#16A34A] text-white rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-[#FF80C7]/20 transition-colors disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
