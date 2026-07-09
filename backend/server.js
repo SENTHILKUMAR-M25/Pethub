@@ -19,12 +19,13 @@ import cors from "cors"
 import sessionMiddleware from "./config/session.js";
 
 const app = express();
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : ["http://localhost:5173","https://pethub-mxjc.vercel.app"];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://pethub-mxjc.vercel.app",
-    ],
+    origin: corsOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
