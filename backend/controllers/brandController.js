@@ -50,7 +50,24 @@ export const updateBrand = async (req, res) => {
 };
 
 export const getBrands = async (req, res) => {
-  const brands = await Brand.find();
+  const brands = await Brand.aggregate([
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "brand",
+        as: "products",
+      },
+    },
+    {
+      $addFields: {
+        productCount: { $size: "$products" },
+      },
+    },
+    {
+      $project: { products: 0 },
+    },
+  ]);
 
   res.json(brands);
 };

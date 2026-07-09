@@ -50,7 +50,24 @@ export const updateCategory = async (req, res) => {
 };
 
 export const getCategories = async (req, res) => {
-  const categories = await Category.find();
+  const categories = await Category.aggregate([
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "category",
+        as: "products",
+      },
+    },
+    {
+      $addFields: {
+        productCount: { $size: "$products" },
+      },
+    },
+    {
+      $project: { products: 0 },
+    },
+  ]);
 
   res.json(categories);
 };

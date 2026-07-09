@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   FaTachometerAlt,
   FaBoxOpen,
@@ -21,11 +22,11 @@ import {
 } from "react-icons/fa";
 
 const menuItems = [
-  { title: "Dashboard", icon: <FaTachometerAlt />, path: "/admin" },
-  { title: "Products", icon: <FaBoxOpen />, path: "/admin/products" },
+  { title: "Dashboard", icon: <FaTachometerAlt />, path: "/admin/dashboard" },
   { title: "Categories", icon: <FaTags />, path: "/admin/categories" },
   { title: "Subcategories", icon: <FaFolder />, path: "/admin/subcategories" },
   { title: "Brands", icon: <FaLayerGroup />, path: "/admin/brands" },
+  { title: "Products", icon: <FaBoxOpen />, path: "/admin/products" },
   { title: "Orders", icon: <FaShoppingCart />, path: "/admin/orders" },
   { title: "Customers", icon: <FaUsers />, path: "/admin/customers" },
   { title: "Reviews", icon: <FaStar />, path: "/admin/reviews" },
@@ -36,6 +37,8 @@ const menuItems = [
 ];
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const isMobile = useCallback(() => window.innerWidth < 1024, []);
 
   useEffect(() => {
@@ -116,7 +119,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <NavLink
                 key={item.title}
                 to={item.path}
-                end={item.path === "/admin"}
+                end={item.path === "/admin/dashboard"}
                 onClick={closeMobile}
                 className={({ isActive }) =>
                   `flex items-center rounded-xl py-3 text-sm font-medium transition-all duration-200 whitespace-nowrap
@@ -158,6 +161,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </button>
 
           <button
+            onClick={() => { logout(); navigate("/admin"); }}
             className={`flex w-full items-center rounded-xl bg-red-500 py-3 text-white transition hover:bg-red-600 ${
               sidebarOpen ? "gap-4 justify-start px-4" : "justify-center px-0"
             }`}

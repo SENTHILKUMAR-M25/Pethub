@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Subcategory from "../models/Subcategory.js";
 import slugify from "slugify";
 
@@ -54,16 +55,43 @@ export const updateSubcategory = async (req, res) => {
 };
 
 export const getSubcategories = async (req, res) => {
-  const filter = {};
+  const pipeline = [
+    {
+      $lookup: {
+        from: "products",
+        localField: "_id",
+        foreignField: "subcategory",
+        as: "products",
+      },
+    },
+    {
+      $addFields: {
+        productCount: { $size: "$products" },
+      },
+    },
+    {
+      $project: { products: 0 },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: { path: "$category", preserveNullAndEmptyArrays: true },
+    },
+  ];
 
   if (req.query.category) {
-    filter.category = req.query.category;
+    pipeline.unshift({
+      $match: { category: new mongoose.Types.ObjectId(req.query.category) },
+    });
   }
 
-  const subcategories = await Subcategory.find(filter).populate(
-    "category",
-    "name slug"
-  );
+  const subcategories = await Subcategory.aggregate(pipeline);
 
   res.json(subcategories);
 };

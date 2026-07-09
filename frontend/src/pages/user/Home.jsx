@@ -1,12 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import { 
   PawPrint, ShoppingCart, Star, Truck, Shield, Heart, 
-  ArrowRight, ChevronRight, Bone, Fish, Bird, Rabbit 
+  ArrowRight, ChevronRight, Bone, Fish, Bird, Rabbit,
+  Dog, Cat, Loader2
 } from 'lucide-react';
 import home from "../../assets/home.png"
-// --- Reusable Animation Hook ---
+import { getCategories } from "../../api/categoryService";
+import { getProducts } from "../../api/productService";
+
 const useScrollReveal = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -36,44 +40,42 @@ const itemVariants = {
   }
 };
 
-// --- Data ---
-const categories = [
-  { name: 'Dogs', icon: PawPrint, color: 'bg-[#FF80C7]/10 text-[#FF80C7]', count: '240+ Products' },
-  { name: 'Cats', icon: Fish, color: 'bg-[#38BDF8]/10 text-[#38BDF8]', count: '180+ Products' },
-  { name: 'Birds', icon: Bird, color: 'bg-[#F97316]/10 text-[#F97316]', count: '95+ Products' },
-  { name: 'Small Pets', icon: Rabbit, color: 'bg-purple-500/10 text-purple-500', count: '120+ Products' },
-  { name: 'Treats', icon: Bone, color: 'bg-amber-500/10 text-amber-500', count: '350+ Products' },
-  { name: 'Accessories', icon: Heart, color: 'bg-rose-500/10 text-rose-500', count: '200+ Products' },
-];
+const categoryIcons = {
+  dogs: Dog,
+  cats: Cat,
+  birds: Bird,
+  "small pets": Rabbit,
+  treats: Bone,
+  accessories: Heart,
+  fish: Fish,
+  rabbit: Rabbit,
+};
 
-const products = [
-  { id: 1, name: 'Premium Grain-Free Dog Food', price: 49.99, rating: 4.8, reviews: 128, tag: 'Best Seller', tagColor: 'bg-[#F97316]' },
-  { id: 2, name: 'Interactive Cat Toy Set', price: 24.99, rating: 4.9, reviews: 89, tag: 'New', tagColor: 'bg-[#38BDF8]' },
-  { id: 3, name: 'Orthopedic Pet Bed - Large', price: 79.99, rating: 4.7, reviews: 256, tag: null, tagColor: '' },
-  { id: 4, name: 'Organic Salmon Oil Supplement', price: 34.99, rating: 4.9, reviews: 412, tag: 'Popular', tagColor: 'bg-[#FF80C7]' },
-];
+const categoryColors = {
+  dogs: "bg-[#FF80C7]/10 text-[#FF80C7]",
+  cats: "bg-[#38BDF8]/10 text-[#38BDF8]",
+  birds: "bg-[#F97316]/10 text-[#F97316]",
+  "small pets": "bg-purple-500/10 text-purple-500",
+  treats: "bg-amber-500/10 text-amber-500",
+  accessories: "bg-rose-500/10 text-rose-500",
+  fish: "bg-cyan-500/10 text-cyan-500",
+  rabbit: "bg-purple-500/10 text-purple-500",
+};
 
-const features = [
-  { icon: Truck, title: 'Free Fast Shipping', desc: 'Free delivery on orders over $35. Same-day dispatch available.', color: 'text-[#FF80C7]' },
-  { icon: Shield, title: 'Vet Approved Products', desc: 'Every product is reviewed by licensed veterinarians for safety.', color: 'text-[#38BDF8]' },
-  { icon: Heart, title: 'Happiness Guarantee', desc: 'Not satisfied? We offer hassle-free returns within 30 days.', color: 'text-[#F97316]' },
-];
-
-const testimonials = [
-  { name: 'Sarah M.', pet: 'Golden Retriever Owner', text: "The quality of food here is unmatched. My dog's coat has never looked better!", rating: 5 },
-  { name: 'James K.', pet: 'Tabby Cat Dad', text: "Fast shipping and the toys keep my cat entertained for hours. Highly recommend!", rating: 5 },
-  { name: 'Emily R.', pet: 'Parrot Parent', text: "Finally found a store that cares about bird nutrition. The organic seeds are amazing.", rating: 4 },
-];
-
-// --- Components ---
+const getCategoryMeta = (name) => {
+  const key = name?.toLowerCase() || "";
+  const Icon = Object.entries(categoryIcons).find(([k]) => key.includes(k))?.[1] || PawPrint;
+  const color = Object.entries(categoryColors).find(([k]) => key.includes(k))?.[1] || "bg-gray-100 text-gray-500";
+  return { Icon, color };
+};
 
 const SectionHeader = ({ subtitle, title, align = 'center' }) => (
-  <div className={`mb-12 ${align === 'left' ? 'text-left' : 'text-center'}`}>
+  <div className={`mb-10 sm:mb-12 ${align === 'left' ? 'text-left' : 'text-center'}`}>
     <motion.span 
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="inline-block px-4 py-1.5 rounded-full bg-[#FF80C7]/10 text-[#FF80C7] text-sm font-semibold tracking-wide uppercase mb-3"
+      className="inline-block px-3 sm:px-4 py-1.5 rounded-full bg-[#FF80C7]/10 text-[#FF80C7] text-xs sm:text-sm font-semibold tracking-wide uppercase mb-3"
     >
       {subtitle}
     </motion.span>
@@ -82,14 +84,16 @@ const SectionHeader = ({ subtitle, title, align = 'center' }) => (
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.1 }}
-      className="text-3xl md:text-4xl font-bold text-[#1F2937]"
+      className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1F2937]"
     >
       {title}
     </motion.h2>
   </div>
 );
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, imageUrl }) => {
+  const { addItem } = useCart();
+
   return (
     <motion.div 
       variants={itemVariants}
@@ -97,13 +101,16 @@ const ProductCard = ({ product }) => {
       className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300"
     >
       <div className="relative aspect-square bg-[#F8FAFC] overflow-hidden">
-        {/* Placeholder for Product Image */}
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-          <PawPrint className="w-16 h-16 text-gray-300" />
-        </div>
+        {imageUrl ? (
+          <img src={imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+            <PawPrint className="w-16 h-16 text-gray-300" />
+          </div>
+        )}
         
         {product.tag && (
-          <span className={`absolute top-3 left-3 ${product.tagColor} text-white text-xs font-bold px-3 py-1 rounded-full`}>
+          <span className={`absolute top-3 left-3 bg-[#F97316] text-white text-xs font-bold px-3 py-1 rounded-full`}>
             {product.tag}
           </span>
         )}
@@ -116,10 +123,10 @@ const ProductCard = ({ product }) => {
           <Heart className="w-5 h-5" />
         </motion.button>
 
-        {/* Quick Add Overlay */}
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <motion.button
             whileTap={{ scale: 0.95 }}
+            onClick={() => addItem(product, 1)}
             className="w-full bg-[#FF80C7] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
           >
             <ShoppingCart className="w-4 h-4" />
@@ -131,30 +138,27 @@ const ProductCard = ({ product }) => {
       <div className="p-5">
         <div className="flex items-center gap-1 mb-2">
           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-          <span className="text-sm font-medium text-[#1F2937]">{product.rating}</span>
-          <span className="text-sm text-gray-400">({product.reviews})</span>
+          <span className="text-sm font-medium text-[#1F2937]">{product.rating || 4.5}</span>
+          <span className="text-sm text-gray-400">({product.reviews || 0})</span>
         </div>
         <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#FF80C7] transition-colors line-clamp-2">
           {product.name}
         </h3>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-[#1F2937]">${product.price}</span>
+          <span className="text-xl font-bold text-[#1F2937]">₹{product.price}</span>
         </div>
       </div>
     </motion.div>
   );
 };
 
-// --- Main Page Sections ---
-
 const HeroSection = () => (
-  <section className="relative pt-22 pb-20 md:pt-25 md:pb-32 overflow-hidden bg-[#F8FAFC]">
-    {/* Background Decorations */}
+  <section className="relative pt-20 pb-14 sm:pb-16 md:pt-24 md:pb-24 overflow-hidden bg-[#F8FAFC]">
     <div className="absolute top-20 right-0 w-96 h-96 bg-[#FF80C7]/5 rounded-full blur-3xl" />
     <div className="absolute bottom-0 left-0 w-72 h-72 bg-[#38BDF8]/5 rounded-full blur-3xl" />
     
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -168,13 +172,13 @@ const HeroSection = () => (
             New Summer Collection Available
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#1F2937] leading-[1.1] mb-6">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#1F2937] leading-[1.1] mb-5 sm:mb-6">
             Everything Your <br />
             <span className="text-[#FF80C7]">Furry Friend</span> <br />
             Deserves
           </h1>
           
-          <p className="text-lg text-gray-600 mb-8 max-w-lg leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-600 mb-7 sm:mb-8 max-w-lg leading-relaxed">
             Premium pet food, toys, and accessories curated with love. 
             Because they are not just pets, they are family.
           </p>
@@ -183,7 +187,7 @@ const HeroSection = () => (
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
                 to="/shop" 
-                className="inline-flex items-center gap-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-[#FF80C7]/25 transition-colors"
+                className="inline-flex items-center gap-2 bg-[#FF80C7] hover:bg-[#16A34A] text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg shadow-xl shadow-[#FF80C7]/25 transition-colors"
               >
                 Shop Now
                 <ArrowRight className="w-5 h-5" />
@@ -193,24 +197,24 @@ const HeroSection = () => (
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
                 to="/deals" 
-                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[#1F2937] px-8 py-4 rounded-full font-bold text-lg border-2 border-[#E5E7EB] transition-colors"
+                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-[#1F2937] px-6 sm:px-8 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg border-2 border-[#E5E7EB] transition-colors"
               >
                 View Deals
               </Link>
             </motion.div>
           </div>
 
-          <div className="mt-12 flex items-center gap-8">
+          <div className="mt-10 sm:mt-12 grid grid-cols-3 gap-4 sm:gap-8 max-w-xl">
             <div>
               <p className="text-3xl font-bold text-[#1F2937]">50k+</p>
               <p className="text-sm text-gray-500">Happy Pets</p>
             </div>
-            <div className="w-px h-12 bg-[#E5E7EB]" />
+            <div className="hidden sm:block w-px h-12 bg-[#E5E7EB]" />
             <div>
               <p className="text-3xl font-bold text-[#1F2937]">4.9</p>
               <p className="text-sm text-gray-500">Customer Rating</p>
             </div>
-            <div className="w-px h-12 bg-[#E5E7EB]" />
+            <div className="hidden sm:block w-px h-12 bg-[#E5E7EB]" />
             <div>
               <p className="text-3xl font-bold text-[#1F2937]">24h</p>
               <p className="text-sm text-gray-500">Fast Delivery</p>
@@ -222,11 +226,10 @@ const HeroSection = () => (
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative hidden lg:block"
+          className="relative hidden md:block"
         >
           <div className="relative z-10 bg-linear-to-br from-[#FF80C7]/20 to-[#38BDF8]/20 rounded-[2.5rem]">
             <div className="h-110 bg-white rounded-3xl shadow-2xl overflow-hidden relative">
-               {/* Placeholder Hero Image */}
                <div className="absolute inset-0  bg-linear-to-br from-[#F8FAFC] to-gray-100 flex items-center justify-center">
                   <img src={home} alt="home-image" />
                </div>
@@ -254,11 +257,11 @@ const HeroSection = () => (
   </section>
 );
 
-const CategoriesSection = () => {
+const CategoriesSection = ({ categories }) => {
   const { ref, controls } = useScrollReveal();
   
   return (
-    <section className="py-20 bg-white">
+    <section className="py-14 sm:py-16 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader subtitle="Browse by Pet" title="Shop for Your Companion" />
         
@@ -269,31 +272,45 @@ const CategoriesSection = () => {
           animate={controls}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
         >
-          {categories.map((cat) => (
-            <motion.div key={cat.name} variants={itemVariants}>
-              <Link 
-                to={`/shop/${cat.name.toLowerCase()}`}
-                className="group block p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
-              >
-                <div className={`w-14 h-14 rounded-xl ${cat.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <cat.icon className="w-7 h-7" />
-                </div>
-                <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#FF80C7] transition-colors">{cat.name}</h3>
-                <p className="text-sm text-gray-500">{cat.count}</p>
-              </Link>
-            </motion.div>
-          ))}
+          {categories.map((cat) => {
+            const { Icon, color } = getCategoryMeta(cat.name);
+            const hasImage = cat.image;
+            return (
+              <motion.div key={cat._id} variants={itemVariants}>
+                <Link 
+                  to={`/shop?category=${cat.name.toLowerCase()}`}
+                  className="group block p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
+                >
+                  {hasImage ? (
+                    <div className="w-14 h-14 rounded-xl overflow-hidden mb-4 group-hover:scale-110 transition-transform">
+                      <img
+                        src={`${import.meta.env.VITE_IMAGE_URL}${cat.image}`}
+                        alt={cat.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className={`w-14 h-14 rounded-xl ${color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-7 h-7" />
+                    </div>
+                  )}
+                  <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#FF80C7] transition-colors">{cat.name}</h3>
+                  <p className="text-sm text-gray-500">{cat.productCount || 0} Products</p>
+                </Link>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
   );
 };
 
-const FeaturedSection = () => {
+const FeaturedSection = ({ products }) => {
   const { ref, controls } = useScrollReveal();
 
   return (
-    <section className="py-20 bg-[#F8FAFC]">
+    <section className="py-14 sm:py-16 md:py-20 bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
           <div className="text-left mb-6 md:mb-0">
@@ -338,8 +355,8 @@ const FeaturedSection = () => {
           animate={controls}
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.slice(0, 4).map((product) => (
+            <ProductCard key={product._id} product={product} imageUrl={product.images?.[0] ? `${import.meta.env.VITE_IMAGE_URL}${product.images[0]}` : null} />
           ))}
         </motion.div>
       </div>
@@ -350,8 +367,14 @@ const FeaturedSection = () => {
 const WhyChooseSection = () => {
   const { ref, controls } = useScrollReveal();
 
+  const features = [
+    { icon: Truck, title: 'Free Fast Shipping', desc: 'Free delivery on orders over ₹35. Same-day dispatch available.', color: 'text-[#FF80C7]' },
+    { icon: Shield, title: 'Vet Approved Products', desc: 'Every product is reviewed by licensed veterinarians for safety.', color: 'text-[#38BDF8]' },
+    { icon: Heart, title: 'Happiness Guarantee', desc: 'Not satisfied? We offer hassle-free returns within 30 days.', color: 'text-[#F97316]' },
+  ];
+
   return (
-    <section className="py-20 bg-white">
+    <section className="py-14 sm:py-16 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader subtitle="Why JodPetHub" title="The Pet Parent's Choice" />
         
@@ -385,8 +408,14 @@ const WhyChooseSection = () => {
 const TestimonialsSection = () => {
   const { ref, controls } = useScrollReveal();
 
+  const testimonials = [
+    { name: 'Sarah M.', pet: 'Golden Retriever Owner', text: "The quality of food here is unmatched. My dog's coat has never looked better!", rating: 5 },
+    { name: 'James K.', pet: 'Tabby Cat Dad', text: "Fast shipping and the toys keep my cat entertained for hours. Highly recommend!", rating: 5 },
+    { name: 'Emily R.', pet: 'Parrot Parent', text: "Finally found a store that cares about bird nutrition. The organic seeds are amazing.", rating: 4 },
+  ];
+
   return (
-    <section className="py-20 bg-[#F8FAFC]">
+    <section className="py-14 sm:py-16 md:py-20 bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader subtitle="Testimonials" title="Happy Tails, Happy Tales" />
         
@@ -412,7 +441,7 @@ const TestimonialsSection = () => {
                   />
                 ))}
               </div>
-              <p className="text-[#1F2937] mb-6 leading-relaxed italic">"{t.text}"</p>
+              <p className="text-[#1F2937] mb-6 leading-relaxed italic">&ldquo;{t.text}&rdquo;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF80C7] to-[#16A34A] flex items-center justify-center text-white font-bold text-lg">
                   {t.name[0]}
@@ -430,63 +459,90 @@ const TestimonialsSection = () => {
   );
 };
 
-const NewsletterSection = () => (
-  <section className="py-20 bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#FF80C7] to-[#16A34A] p-12 md:p-20 text-center"
-      >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+// const NewsletterSection = () => (
+//   <section className="py-20 bg-white">
+//     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//       <motion.div
+//         initial={{ opacity: 0, y: 40 }}
+//         whileInView={{ opacity: 1, y: 0 }}
+//         viewport={{ once: true }}
+//         transition={{ duration: 0.8 }}
+//         className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#FF80C7] to-[#16A34A] p-12 md:p-20 text-center"
+//       >
+//         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+//         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
         
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Join the JodPetHub Family
-          </h2>
-          <p className="text-white/90 mb-8 text-lg">
-            Subscribe for exclusive deals, pet care tips, and new arrival updates. 
-            Get 15% off your first order!
-          </p>
+//         <div className="relative z-10 max-w-2xl mx-auto">
+//           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+//             Join the JodPetHub Family
+//           </h2>
+//           <p className="text-white/90 mb-8 text-lg">
+//             Subscribe for exclusive deals, pet care tips, and new arrival updates. 
+//             Get 15% off your first order!
+//           </p>
           
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input 
-              type="email" 
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-4 rounded-full bg-white/20 border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
-            />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-white text-[#FF80C7] rounded-full font-bold hover:bg-gray-50 transition-colors shadow-lg"
-            >
-              Subscribe
-            </motion.button>
-          </form>
+//           <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
+//             <input 
+//               type="email" 
+//               placeholder="Enter your email"
+//               className="flex-1 px-6 py-4 rounded-full bg-white/20 border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
+//             />
+//             <motion.button
+//               whileHover={{ scale: 1.05 }}
+//               whileTap={{ scale: 0.95 }}
+//               className="px-8 py-4 bg-white text-[#FF80C7] rounded-full font-bold hover:bg-gray-50 transition-colors shadow-lg"
+//             >
+//               Subscribe
+//             </motion.button>
+//           </form>
           
-          <p className="text-white/70 text-sm mt-4">
-            No spam, ever. Unsubscribe anytime.
-          </p>
-        </div>
-      </motion.div>
-    </div>
-  </section>
-);
-
-// --- Main Home Page ---
+//           <p className="text-white/70 text-sm mt-4">
+//             No spam, ever. Unsubscribe anytime.
+//           </p>
+//         </div>
+//       </motion.div>
+//     </div>
+//   </section>
+// );
 
 const Home = () => {
+  const [categories, setCategories] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [catRes, prodRes] = await Promise.all([
+          getCategories(),
+          getProducts({ featured: true }),
+        ]);
+        setCategories(catRes.data.filter((c) => c.status === "Active"));
+        setFeaturedProducts(prodRes.data.filter((p) => p.status === "Active" && p.stock > 0));
+      } catch (err) {
+        console.error("Failed to load homepage data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
+        <Loader2 className="w-10 h-10 text-[#FF80C7] animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
       <HeroSection />
-      <CategoriesSection />
-      <FeaturedSection />
+      {categories.length > 0 && <CategoriesSection categories={categories} />}
+      {featuredProducts.length > 0 && <FeaturedSection products={featuredProducts} />}
       <WhyChooseSection />
       <TestimonialsSection />
-      <NewsletterSection />
     </main>
   );
 };
