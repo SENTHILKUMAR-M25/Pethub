@@ -20,6 +20,7 @@ import {
   Tag,
 } from "lucide-react";
 import api from "../../api/axios";
+import { getImageUrl } from "../../api/imageUtils";
 
 const initialState = {
   name: "",
@@ -190,7 +191,7 @@ export default function Products() {
       featured: product.featured || false,
     });
     if (product.images && product.images.length > 0) {
-      setPreviews(product.images.map((img) => `${import.meta.env.VITE_IMAGE_URL}${img}`));
+      setPreviews(product.images.map((img) => getImageUrl(img)));
     } else {
       setPreviews([]);
     }
@@ -395,7 +396,7 @@ export default function Products() {
                 className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300">
                 <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {item.images && item.images.length > 0 ? (
-                    <img src={`${import.meta.env.VITE_IMAGE_URL}${item.images[0]}`} alt={item.name}
+                    <img src={getImageUrl(item.images[0])} alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -479,7 +480,7 @@ export default function Products() {
                       <td className="p-4">
                         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden flex-shrink-0">
                           {item.images && item.images.length > 0 ? (
-                            <img src={`${import.meta.env.VITE_IMAGE_URL}${item.images[0]}`} alt={item.name} className="w-full h-full object-cover" />
+                            <img src={getImageUrl(item.images[0])} alt={item.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <ImageIcon className="w-6 h-6 text-gray-300" />

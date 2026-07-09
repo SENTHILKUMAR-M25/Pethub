@@ -12,8 +12,7 @@ import {
 } from 'lucide-react';
 import { getProduct, getProducts } from "../../api/productService";
 import { getProductReviews, canReview, createReview, deleteReview } from "../../api/reviewService";
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_URL || "";
+import { getImageUrl } from "../../api/imageUtils";
 
 const TABS = ["Product Info", "Reviews", "Shipping & Returns"];
 
@@ -23,12 +22,6 @@ const SORT_OPTIONS = [
   { label: "Highest Rated", value: "highest" },
   { label: "Lowest Rated", value: "lowest" },
 ];
-
-const getImageUrl = (img) => {
-  if (!img) return null;
-  if (img.startsWith("http")) return img;
-  return `${IMAGE_URL}${img}`;
-};
 
 function StarRating({ rating, size = "w-5 h-5" }) {
   return (

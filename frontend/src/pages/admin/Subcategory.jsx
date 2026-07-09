@@ -18,6 +18,7 @@ import {
   LayoutList,
 } from "lucide-react";
 import api from "../../api/axios";
+import { getImageUrl } from "../../api/imageUtils";
 
 const initialState = {
   name: "",
@@ -154,7 +155,7 @@ export default function Subcategory() {
     });
     setPreview(
       sub.image
-        ? `${import.meta.env.VITE_IMAGE_URL}${sub.image}`
+        ? getImageUrl(sub.image)
         : ""
     );
     setImage(null);
@@ -351,8 +352,8 @@ export default function Subcategory() {
                 className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300">
                 <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {item.image ? (
-                    <img src={`${import.meta.env.VITE_IMAGE_URL}${item.image}`} alt={item.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+<img src={getImageUrl(item.image)} alt={item.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <ImageIcon className="w-12 h-12 text-gray-300" />
@@ -419,7 +420,7 @@ export default function Subcategory() {
                       <td className="p-4">
                         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden flex-shrink-0">
                           {item.image ? (
-                            <img src={`${import.meta.env.VITE_IMAGE_URL}${item.image}`} alt={item.name} className="w-full h-full object-cover" />
+                            <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <ImageIcon className="w-6 h-6 text-gray-300" />

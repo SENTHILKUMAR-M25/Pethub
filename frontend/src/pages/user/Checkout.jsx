@@ -506,7 +506,7 @@ export default function Checkout() {
                   <div key={item._id} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
                     <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {item.images?.[0] ? (
-                        <img src={`${import.meta.env.VITE_IMAGE_URL}${item.images[0]}`} alt={item.name} className="w-full h-full object-cover" />
+                        <img src={getImageUrl(item.images[0])} alt={item.name} className="w-full h-full object-cover" />
                       ) : (
                         <Package className="w-6 h-6 text-gray-300" />
                       )}

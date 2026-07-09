@@ -10,6 +10,7 @@ import {
 import home from "../../assets/home.png"
 import { getCategories } from "../../api/categoryService";
 import { getProducts } from "../../api/productService";
+import { getImageUrl } from "../../api/imageUtils";
 
 const useScrollReveal = () => {
   const ref = useRef(null);
@@ -284,7 +285,7 @@ const CategoriesSection = ({ categories }) => {
                   {hasImage ? (
                     <div className="w-14 h-14 rounded-xl overflow-hidden mb-4 group-hover:scale-110 transition-transform">
                       <img
-                        src={`${import.meta.env.VITE_IMAGE_URL}${cat.image}`}
+                        src={getImageUrl(cat.image)}
                         alt={cat.name}
                         className="w-full h-full object-cover"
                       />
@@ -356,7 +357,7 @@ const FeaturedSection = ({ products }) => {
           className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {products.slice(0, 4).map((product) => (
-            <ProductCard key={product._id} product={product} imageUrl={product.images?.[0] ? `${import.meta.env.VITE_IMAGE_URL}${product.images[0]}` : null} />
+            <ProductCard key={product._id} product={product} imageUrl={getImageUrl(product.images?.[0])} />
           ))}
         </motion.div>
       </div>

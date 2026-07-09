@@ -629,6 +629,7 @@ import {
 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
+import { getImageUrl } from "../../api/imageUtils";
 
 const SHIPPING_OPTIONS = [
   { id: "standard", name: "Standard Shipping", price: 5.99, time: "5-7 business days" },
@@ -641,13 +642,6 @@ const COUPONS = [
   { code: "FREESHIP", discount: 0, type: "shipping", minOrder: 35, desc: "Free shipping over ₹35" },
   { code: "SAVE10", discount: 10, type: "fixed", minOrder: 0, desc: "₹10 off any order" },
 ];
-
-function getImageUrl(item) {
-  const img = item.images?.[0];
-  if (!img) return null;
-  if (img.startsWith("http")) return img;
-  return `${import.meta.env.VITE_IMAGE_URL}${img}`;
-}
 
 function getCategoryName(item) {
   if (!item.category) return "";

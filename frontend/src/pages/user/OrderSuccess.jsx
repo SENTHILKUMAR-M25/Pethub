@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle, Package, MapPin, CreditCard, Loader2, AlertCircle } from "lucide-react";
 import { getOrderById } from "../../api/orderService";
+import { getImageUrl } from "../../api/imageUtils";
 
 export default function OrderSuccess() {
   const { id } = useParams();
@@ -80,7 +81,7 @@ export default function OrderSuccess() {
               <div key={item._id} className="flex items-center gap-4 py-4 first:pt-0 last:pb-0">
                 <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
                   {item.image ? (
-                    <img src={`${import.meta.env.VITE_IMAGE_URL}${item.image}`} alt={item.name} className="w-full h-full object-cover" />
+                    <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" />
                   ) : (
                     <Package className="w-6 h-6 text-gray-300" />
                   )}

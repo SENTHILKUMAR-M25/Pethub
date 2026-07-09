@@ -10,8 +10,7 @@ import {
 import { getProducts } from "../../api/productService";
 import { getCategories } from "../../api/categoryService";
 import { getBrands } from "../../api/brandService";
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_URL || "";
+import { getImageUrl } from "../../api/imageUtils";
 
 const PRICE_RANGES = [
   { label: 'Under ₹25', min: 0, max: 25 },
@@ -60,7 +59,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
 
   if (!product) return null;
 
-  const imageUrl = product.images?.[0] ? `${IMAGE_URL}${product.images[0]}` : null;
+  const imageUrl = getImageUrl(product.images?.[0]);
 
   return (
     <motion.div
@@ -178,7 +177,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
 };
 
 const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
-  const imageUrl = product.images?.[0] ? `${IMAGE_URL}${product.images[0]}` : null;
+  const imageUrl = getImageUrl(product.images?.[0]);
 
   return (
     <motion.div
@@ -254,7 +253,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
 };
 
 const ProductCardList = ({ product, onQuickView, onAddToCart }) => {
-  const imageUrl = product.images?.[0] ? `${IMAGE_URL}${product.images[0]}` : null;
+  const imageUrl = getImageUrl(product.images?.[0]);
 
   return (
     <motion.div

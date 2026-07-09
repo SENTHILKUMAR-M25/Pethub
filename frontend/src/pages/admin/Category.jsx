@@ -249,13 +249,11 @@ import {
   AlertCircle,
   Check,
   ChevronDown,
-  PawPrint,
+  Layers,
   Loader2,
-  Filter,
-  Grid3X3,
-  LayoutList
 } from "lucide-react";
 import api from "../../api/axios";
+import { getImageUrl } from "../../api/imageUtils";
 
 const initialState = {
   name: "",
@@ -385,7 +383,7 @@ export default function Category() {
     });
     setPreview(
       category.image
-        ? `${import.meta.env.VITE_IMAGE_URL}${category.image}`
+        ? getImageUrl(category.image)
         : ""
     );
     setImage(null);
@@ -566,7 +564,7 @@ export default function Category() {
                 className="group bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden hover:shadow-xl hover:shadow-[#FF80C7]/5 transition-all duration-300">
                 <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {item.image ? (
-                    <img src={`${import.meta.env.VITE_IMAGE_URL}${item.image}`} alt={item.name}
+                    <img src={getImageUrl(item.image)} alt={item.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -629,7 +627,7 @@ export default function Category() {
                       <td className="p-4">
                         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden flex-shrink-0">
                           {item.image ? (
-                            <img src={`${import.meta.env.VITE_IMAGE_URL}${item.image}`} alt={item.name} className="w-full h-full object-cover" />
+                            <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
                               <ImageIcon className="w-6 h-6 text-gray-300" />
