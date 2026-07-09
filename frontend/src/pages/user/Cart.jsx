@@ -694,7 +694,7 @@ function EmptyCart() {
 
 function CartItem({ item, onUpdateQuantity, onRemove }) {
   const [isRemoving, setIsRemoving] = useState(false);
-  const imgUrl = getImageUrl(item);
+  const imgUrl = getImageUrl(item.images?.[0] || item.image);
   const catName = getCategoryName(item);
 
   const handleRemove = () => {

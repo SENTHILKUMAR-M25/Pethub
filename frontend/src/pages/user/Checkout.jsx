@@ -11,6 +11,7 @@ import { useCart } from "../../context/CartContext";
 import { createOrder } from "../../api/orderService";
 import { createPaymentOrder, verifyPayment } from "../../api/paymentService";
 import { getAddresses, createAddress, updateAddress, deleteAddress } from "../../api/addressService";
+import { getImageUrl } from "../../api/imageUtils";
 
 const SHIPPING_OPTIONS = [
   { id: "standard", label: "Standard Delivery", desc: "5-7 business days", cost: 5.99 },

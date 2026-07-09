@@ -1,7 +1,7 @@
 const BASE_URL = import.meta.env.VITE_IMAGE_URL || "";
 
 export function getImageUrl(img) {
-  if (!img) return null;
+  if (!img || typeof img !== "string") return null;
   if (img.startsWith("http")) return img;
   return `${BASE_URL}${img}`;
 }
