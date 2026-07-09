@@ -21,7 +21,7 @@ import sessionMiddleware from "./config/session.js";
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://pethub-red.vercel.app/",
     credentials: true,
   })
 );
