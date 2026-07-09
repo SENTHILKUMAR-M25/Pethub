@@ -655,7 +655,7 @@ export default function Products() {
 
                   <div>
                     <label className="block text-sm font-semibold text-[#1F2937] mb-2">
-                      Price ($) <span className="text-red-500">*</span>
+                      Price (₹) <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />

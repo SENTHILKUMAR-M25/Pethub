@@ -21,7 +21,7 @@ const SHIPPING_OPTIONS = [
 const COUPONS = {
   PETLOVE15: { type: "percent", value: 15, label: "15% off" },
   FREESHIP: { type: "freeship", value: 0, label: "Free shipping" },
-  SAVE10: { type: "flat", value: 10, label: "$10 off" },
+  SAVE10: { type: "flat", value: 10, label: "₹10 off" },
 };
 
 export default function Checkout() {

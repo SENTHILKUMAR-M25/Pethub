@@ -16,9 +16,9 @@
 // ];
 
 // const COUPONS = [
-//   { code: "PETLOVE15", discount: 0.15, type: "percent", minOrder: 50, desc: "15% off orders over $50" },
-//   { code: "FREESHIP", discount: 0, type: "shipping", minOrder: 35, desc: "Free shipping over $35" },
-//   { code: "SAVE10", discount: 10, type: "fixed", minOrder: 0, desc: "$10 off any order" },
+//   { code: "PETLOVE15", discount: 0.15, type: "percent", minOrder: 50, desc: "15% off orders over ₹50" },
+//   { code: "FREESHIP", discount: 0, type: "shipping", minOrder: 35, desc: "Free shipping over ₹35" },
+//   { code: "SAVE10", discount: 10, type: "fixed", minOrder: 0, desc: "₹10 off any order" },
 // ];
 
 // function getImageUrl(item) {
@@ -366,7 +366,7 @@
 //             {/* Trust badges */}
 //             <div className="grid grid-cols-3 gap-3 sm:gap-4">
 //               {[
-//                 { icon: Truck, title: "Free Shipping", desc: "Over $35" },
+//                 { icon: Truck, title: "Free Shipping", desc: "Over ₹35" },
 //                 { icon: Shield, title: "Secure", desc: "256-bit SSL" },
 //                 { icon: Package, title: "Easy Returns", desc: "30 days" },
 //               ].map((badge, i) => (
@@ -430,7 +430,7 @@
 //                         <span className="text-xs sm:text-sm font-bold text-[#1F2937] flex-shrink-0">
 //                           {shippingCost === 0 && opt.id === "standard"
 //                             ? "FREE"
-//                             : `$${opt.price.toFixed(2)}`}
+//                             : `₹${opt.price.toFixed(2)}`}
 //                         </span>
 //                       </label>
 //                     ))}
