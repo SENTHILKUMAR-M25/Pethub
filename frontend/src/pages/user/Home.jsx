@@ -271,7 +271,7 @@ const CategoriesSection = ({ categories }) => {
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+          className="flex gap-4 justify-center items-center"
         >
           {categories.map((cat) => {
             const { Icon, color } = getCategoryMeta(cat.name);
@@ -279,7 +279,7 @@ const CategoriesSection = ({ categories }) => {
             return (
               <motion.div key={cat._id} variants={itemVariants}>
                 <Link 
-                  to={`/shop?category=${cat.name.toLowerCase()}`}
+                   to={`/shop?category=${encodeURIComponent(cat.name)}`}
                   className="group block p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
                 >
                   {hasImage ? (
@@ -460,51 +460,6 @@ const TestimonialsSection = () => {
   );
 };
 
-// const NewsletterSection = () => (
-//   <section className="py-20 bg-white">
-//     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//       <motion.div
-//         initial={{ opacity: 0, y: 40 }}
-//         whileInView={{ opacity: 1, y: 0 }}
-//         viewport={{ once: true }}
-//         transition={{ duration: 0.8 }}
-//         className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-r from-[#FF80C7] to-[#16A34A] p-12 md:p-20 text-center"
-//       >
-//         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-//         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
-        
-//         <div className="relative z-10 max-w-2xl mx-auto">
-//           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-//             Join the JodPetHub Family
-//           </h2>
-//           <p className="text-white/90 mb-8 text-lg">
-//             Subscribe for exclusive deals, pet care tips, and new arrival updates. 
-//             Get 15% off your first order!
-//           </p>
-          
-//           <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
-//             <input 
-//               type="email" 
-//               placeholder="Enter your email"
-//               className="flex-1 px-6 py-4 rounded-full bg-white/20 border border-white/30 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm"
-//             />
-//             <motion.button
-//               whileHover={{ scale: 1.05 }}
-//               whileTap={{ scale: 0.95 }}
-//               className="px-8 py-4 bg-white text-[#FF80C7] rounded-full font-bold hover:bg-gray-50 transition-colors shadow-lg"
-//             >
-//               Subscribe
-//             </motion.button>
-//           </form>
-          
-//           <p className="text-white/70 text-sm mt-4">
-//             No spam, ever. Unsubscribe anytime.
-//           </p>
-//         </div>
-//       </motion.div>
-//     </div>
-//   </section>
-// );
 
 const Home = () => {
   const [categories, setCategories] = useState([]);

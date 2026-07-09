@@ -380,6 +380,7 @@ const Shop = () => {
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const initialBrandSync = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -401,6 +402,45 @@ const Shop = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (brands.length === 0 || initialBrandSync.current) return;
+    const brandParam = searchParams.get('brand');
+    if (brandParam) {
+      const matching = brands.find((b) => b.name === brandParam);
+      if (matching) {
+        setSelectedBrands([matching.name]);
+      }
+    }
+    initialBrandSync.current = true;
+  }, [brands, searchParams]);
+
+  useEffect(() => {
+    if (categories.length === 0) return;
+    const catParam = searchParams.get('category');
+    if (catParam && catParam !== 'All') {
+      const exact = categories.find((c) => c.name === catParam);
+      if (!exact) {
+        const match = categories.find((c) => c.name.toLowerCase() === catParam.toLowerCase());
+        if (match) {
+          setSelectedCategory(match.name);
+          const params = new URLSearchParams(searchParams);
+          params.set('category', match.name);
+          setSearchParams(params, { replace: true });
+        }
+      }
+    }
+  }, [categories, searchParams, setSearchParams]);
+
+  useEffect(() => {
+    if (!initialBrandSync.current) return;
+    const brandParam = searchParams.get('brand');
+    if (brandParam && selectedBrands.length === 0) {
+      const params = new URLSearchParams(searchParams);
+      params.delete('brand');
+      setSearchParams(params, { replace: true });
+    }
+  }, [selectedBrands, searchParams, setSearchParams]);
 
   const categoryNames = ['All', ...categories.map((c) => c.name)];
   const brandNames = brands.map((b) => b.name);
@@ -455,7 +495,7 @@ const Shop = () => {
   };
 
   const toggleBrand = (brand) => {
-    setSelectedBrands((prev) => 
+    setSelectedBrands((prev) =>
       prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
     );
   };
@@ -471,6 +511,10 @@ const Shop = () => {
     setSelectedBrands([]);
     setSelectedPriceRanges([]);
     setSearchQuery('');
+    const params = new URLSearchParams(searchParams);
+    params.delete('brand');
+    params.delete('category');
+    setSearchParams(params, { replace: true });
   };
 
   if (loading) {

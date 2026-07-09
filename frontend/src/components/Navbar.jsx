@@ -11,7 +11,7 @@ import {
 const navLinks = [
   { name: 'Home', path: '/' },
   { name: 'Shop', path: '/shop' },
-  { name: 'Categories', path: '/categories' },
+  { name: 'Brands', path: '/brands' },
   { name: 'Deals', path: '/deals' },
   { name: 'About', path: '/about' },
 ];

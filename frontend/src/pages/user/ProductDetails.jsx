@@ -230,7 +230,7 @@ const ProductDetails = () => {
           <ChevronRight className="w-3 h-3" />
           {product.category?.name && (
             <>
-              <Link to={`/shop?category=${product.category.name.toLowerCase()}`} className="hover:text-[#FF80C7] transition-colors">
+              <Link to={`/shop?category=${encodeURIComponent(product.category.name)}`} className="hover:text-[#FF80C7] transition-colors">
                 {product.category.name}
               </Link>
               <ChevronRight className="w-3 h-3" />

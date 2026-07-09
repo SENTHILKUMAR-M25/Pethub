@@ -4,10 +4,11 @@ import { CartProvider } from "./context/CartContext";
 import AdminLayout from "./layouts/AdminLayout";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 
 import Home from "./pages/user/Home";
 import Shop from "./pages/user/Shop";
-import Categories from "./pages/user/Categories";
+import Brands from "./pages/user/Brands";
 import ProductDetails from "./pages/user/ProductDetails";
 import Cart from "./pages/user/Cart";
 import Checkout from "./pages/user/Checkout";
@@ -42,12 +43,13 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />
       {!isAdminRoute && <Navbar />}
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
-        <Route path="/categories" element={<Categories />} />
+        <Route path="/brands" element={<Brands />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />

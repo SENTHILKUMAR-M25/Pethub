@@ -8,6 +8,7 @@ import { FaFacebook as Facebook, FaInstagram as Instagram, FaYoutube as Youtube 
 const quickLinks = [
   { name: "Home", path: "/" },
   { name: "Shop", path: "/shop" },
+  { name: "Brands", path: "/brands" },
   { name: "Categories", path: "/categories" },
   { name: "Deals", path: "/deals" },
   { name: "About Us", path: "/about" },
