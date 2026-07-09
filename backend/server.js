@@ -21,11 +21,13 @@ import sessionMiddleware from "./config/session.js";
 const app = express();
 app.use(
   cors({
-     origin: [
+    origin: [
       "http://localhost:5173",
       "https://pethub-mxjc.vercel.app",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
