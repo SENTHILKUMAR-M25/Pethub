@@ -62,7 +62,6 @@
 
 
 
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -88,6 +87,14 @@ import contactRoutes from "./routes/contactRoutes.js";
 
 const app = express();
 
+// Connect Database
+connectDB();
+
+// Middleware
+app.use(express.json());
+app.use(sessionMiddleware);
+
+// CORS Configuration
 const corsOrigins = [
   "http://localhost:5173",
   "https://pethub-mxjc.vercel.app",
@@ -95,22 +102,26 @@ const corsOrigins = [
 
 app.use(
   cors({
-    origin: corsOrigins,
+    origin: function (origin, callback) {
+      // Allow Postman and server-to-server requests
+      if (!origin) return callback(null, true);
+
+      if (corsOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-app.use(express.json());
-app.use(sessionMiddleware);
-
-connectDB();
-
-const PORT = process.env.PORT || 5000;
-
+// Static Folder
 app.use("/uploads", express.static("uploads"));
 
+// API Routes
 app.use("/api/categories", categoryRoutes);
 app.use("/api/subcategories", subcategoryRoutes);
 app.use("/api/brands", brandRoutes);
@@ -124,6 +135,17 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
+
+// Health Check
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "PetHub API is running 🚀",
+  });
+});
+
+// Start Server
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
