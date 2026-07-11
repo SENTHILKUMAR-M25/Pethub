@@ -15,6 +15,7 @@ import reviewRoutes from "./routes/reviewRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 import cors from "cors"
 import sessionMiddleware from "./config/session.js";
 
@@ -51,6 +52,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/contact", contactRoutes);
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });

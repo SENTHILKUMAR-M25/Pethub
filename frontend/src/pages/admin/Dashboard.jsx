@@ -96,7 +96,8 @@ const Dashboard = () => {
   const statusData = stats?.statusDistribution || [];
 
   return (
-    <div className="space-y-8">
+    <div className="min-h-screen bg-[#F8FAFC] p-4 sm:p-6 lg:p-8">
+      <div className="space-y-8">
 
       <div>
         <h1 className="text-3xl font-bold text-slate-800">
@@ -254,7 +255,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
+    </div>
     </div>
   );
 };

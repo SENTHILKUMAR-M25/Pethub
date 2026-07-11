@@ -11,10 +11,10 @@ const AdminLayout = () => {
 
       <div
         className={`flex flex-1 flex-col transition-all duration-300 ease-in-out ${
-          sidebarOpen ? "lg:ml-72" : "lg:ml-2"
+          sidebarOpen ? "lg:ml-72" : "lg:ml-20"
         }`}
       >
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto">
           <Outlet />
         </main>
 

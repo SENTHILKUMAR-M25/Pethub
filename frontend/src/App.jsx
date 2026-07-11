@@ -27,6 +27,9 @@ import Products from "./pages/admin/Products";
 import Customers from "./pages/admin/Customers";
 import AdminOrders from "./pages/admin/Orders";
 import AdminReviews from "./pages/admin/Reviews";
+import Enquiries from "./pages/admin/Enquiries";
+import About from "./pages/user/About";
+import Contact from "./pages/user/Contact";
 
 function RequireAdmin({ children }) {
   const { user, loading } = useAuth();
@@ -58,6 +61,9 @@ function AppContent() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+
 
         <Route path="/admin" element={<AdminLogin />} />
 
@@ -77,6 +83,7 @@ function AppContent() {
           <Route path="customers" element={<Customers />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="reviews" element={<AdminReviews />} />
+          <Route path="enquiries" element={<Enquiries />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -10,6 +10,7 @@ import {
   FaShoppingCart,
   FaUsers,
   FaStar,
+  FaEnvelope,
   FaTicketAlt,
   FaImage,
   FaChartBar,
@@ -30,6 +31,7 @@ const menuItems = [
   { title: "Orders", icon: <FaShoppingCart />, path: "/admin/orders" },
   { title: "Customers", icon: <FaUsers />, path: "/admin/customers" },
   { title: "Reviews", icon: <FaStar />, path: "/admin/reviews" },
+  { title: "Enquiries", icon: <FaEnvelope />, path: "/admin/enquiries" },
   { title: "Coupons", icon: <FaTicketAlt />, path: "/admin/coupons" },
   { title: "Banners", icon: <FaImage />, path: "/admin/banners" },
   { title: "Analytics", icon: <FaChartBar />, path: "/admin/analytics" },
@@ -90,7 +92,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       >
         {/* Logo */}
         <div className={`flex h-20 shrink-0 items-center border-b transition-all duration-300 ${
-          sidebarOpen ? "justify-between px-6" : "justify-center px-0"
+          sidebarOpen ? "justify-between px-6" : "justify-center px-6"
         }`}>
           <div className="flex items-center gap-3">
             <div className="rounded-full bg-green-500 p-2 text-white">
