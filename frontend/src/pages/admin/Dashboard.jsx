@@ -141,7 +141,7 @@ const Dashboard = () => {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex h-[300px] items-center justify-center text-gray-400">
+            <div className="flex h-75 items-center justify-center text-gray-400">
               No sales data yet
             </div>
           )}
@@ -159,7 +159,7 @@ const Dashboard = () => {
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex h-[300px] items-center justify-center text-gray-400">
+            <div className="flex h-75 items-center justify-center text-gray-400">
               No revenue data yet
             </div>
           )}
@@ -196,7 +196,7 @@ const Dashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="flex h-[280px] items-center justify-center text-gray-400">
+            <div className="flex h-70 items-center justify-center text-gray-400">
               No order data yet
             </div>
           )}

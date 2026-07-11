@@ -70,9 +70,9 @@ function ProfileDropdown({ user, onLogout, onNavigate }) {
             className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl border border-[#E5E7EB] shadow-xl shadow-gray-200/50 overflow-hidden z-50"
           >
             <>
-              <div className="p-5 border-b border-[#E5E7EB] bg-gradient-to-r from-[#FF80C7]/5 to-pink-50">
+              <div className="p-5 border-b border-[#E5E7EB] bg-linear-to-r from-[#FF80C7]/5 to-pink-50">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-[#FF80C7] flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-[#FF80C7] flex items-center justify-center text-white text-lg font-bold shrink-0">
                     {initial}
                   </div>
                   <div className="min-w-0">
@@ -127,7 +127,7 @@ function Toast({ message, visible, onClose }) {
           initial={{ opacity: 0, y: 50, x: '-50%' }}
           animate={{ opacity: 1, y: 0, x: '-50%' }}
           exit={{ opacity: 0, y: 50, x: '-50%' }}
-          className="fixed bottom-6 left-1/2 z-[100] flex items-center gap-3 bg-[#1F2937] text-white px-6 py-3.5 rounded-2xl shadow-2xl"
+          className="fixed bottom-6 left-1/2 z-100 flex items-center gap-3 bg-[#1F2937] text-white px-6 py-3.5 rounded-2xl shadow-2xl"
         >
           <CheckCircle className="w-5 h-5 text-green-400" />
           <span className="text-sm font-medium">{message}</span>
@@ -310,7 +310,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[280px] bg-white z-50 shadow-2xl md:hidden flex flex-col"
+              className="fixed top-0 right-0 bottom-0 w-70 bg-white z-50 shadow-2xl md:hidden flex flex-col"
             >
               <div className="flex items-center justify-between p-6 border-b border-[#E5E7EB]">
                 <div className="flex items-center gap-2">
