@@ -2,6 +2,11 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
+import {
+  findValidCoupon,
+  computeCouponDiscount,
+  markCouponUsed,
+} from "./couponController.js";
 
 let razorpay = null;
 const getRazorpay = () => {
@@ -89,7 +94,18 @@ export const verifyPayment = async (req, res) => {
       subtotal += product.price * item.quantity;
     }
 
-    const total = subtotal + (shippingCost || 0) - (discount || 0);
+    let finalDiscount = discount || 0;
+    let validatedCoupon = null;
+    if (couponCode) {
+      const result = await findValidCoupon(couponCode, subtotal);
+      if (!result.valid) {
+        return res.status(400).json({ message: result.message });
+      }
+      validatedCoupon = result.coupon;
+      finalDiscount = computeCouponDiscount(validatedCoupon, subtotal, shippingCost || 0);
+    }
+
+    const total = subtotal + (shippingCost || 0) - finalDiscount;
 
     const order = await Order.create({
       user: req.user._id,
@@ -99,7 +115,7 @@ export const verifyPayment = async (req, res) => {
       paymentStatus: "paid",
       orderStatus: "confirmed",
       shippingCost: shippingCost || 0,
-      discount: discount || 0,
+      discount: finalDiscount,
       couponCode,
       subtotal,
       total,
@@ -107,6 +123,10 @@ export const verifyPayment = async (req, res) => {
       razorpayPaymentId: razorpay_payment_id,
       razorpaySignature: razorpay_signature,
     });
+
+    if (validatedCoupon) {
+      await markCouponUsed(validatedCoupon._id);
+    }
 
     for (const item of items) {
       await Product.findByIdAndUpdate(item.productId, {

@@ -28,6 +28,10 @@ import Customers from "./pages/admin/Customers";
 import AdminOrders from "./pages/admin/Orders";
 import AdminReviews from "./pages/admin/Reviews";
 import Enquiries from "./pages/admin/Enquiries";
+import Coupons from "./pages/admin/Coupons";
+import Banners from "./pages/admin/Banners";
+import Analytics from "./pages/admin/Analytics";
+import Settings from "./pages/admin/Settings";
 import About from "./pages/user/About";
 import Contact from "./pages/user/Contact";
 
@@ -84,6 +88,10 @@ function AppContent() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="reviews" element={<AdminReviews />} />
           <Route path="enquiries" element={<Enquiries />} />
+          <Route path="coupons" element={<Coupons />} />
+          <Route path="banners" element={<Banners />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

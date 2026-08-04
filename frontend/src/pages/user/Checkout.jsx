@@ -11,6 +11,7 @@ import { useCart } from "../../context/CartContext";
 import { createOrder } from "../../api/orderService";
 import { createPaymentOrder, verifyPayment } from "../../api/paymentService";
 import { getAddresses, createAddress, updateAddress, deleteAddress } from "../../api/addressService";
+import { validateCoupon } from "../../api/couponService";
 import { getImageUrl } from "../../api/imageUtils";
 
 const SHIPPING_OPTIONS = [
@@ -18,12 +19,6 @@ const SHIPPING_OPTIONS = [
   { id: "express", label: "Express Delivery", desc: "2-3 business days", cost: 12.99 },
   { id: "priority", label: "Priority Delivery", desc: "1 business day", cost: 19.99 },
 ];
-
-const COUPONS = {
-  PETLOVE15: { type: "percent", value: 15, label: "15% off" },
-  FREESHIP: { type: "freeship", value: 0, label: "Free shipping" },
-  SAVE10: { type: "flat", value: 10, label: "₹10 off" },
-};
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -43,6 +38,7 @@ export default function Checkout() {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponMsg, setCouponMsg] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const orderPlaced = useRef(false);
@@ -106,25 +102,50 @@ export default function Checkout() {
 
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingOpt = SHIPPING_OPTIONS.find((s) => s.id === shippingId);
-  const shippingCost = appliedCoupon?.type === "freeship" ? 0 : (shippingOpt?.cost || 0);
+  const originalShippingCost = shippingOpt?.cost || 0;
+  const shippingCost = appliedCoupon?.type === "freeship" ? 0 : originalShippingCost;
   let discount = 0;
-  if (appliedCoupon?.type === "percent") {
+  if (appliedCoupon && typeof appliedCoupon.discount === "number") {
+    discount = appliedCoupon.type === "freeship" ? 0 : appliedCoupon.discount;
+  } else if (appliedCoupon?.type === "percent") {
     discount = subtotal * (appliedCoupon.value / 100);
   } else if (appliedCoupon?.type === "flat") {
     discount = appliedCoupon.value;
   }
   const total = Math.max(0, subtotal + shippingCost - discount);
 
-  const handleApplyCoupon = () => {
+  const handleApplyCoupon = async () => {
     const code = couponCode.trim().toUpperCase();
-    const coupon = COUPONS[code];
-    if (coupon) {
-      setAppliedCoupon({ ...coupon, code });
-      setCouponMsg(`Coupon "${code}" applied: ${coupon.label}`);
-    } else {
+    if (!code) {
       setAppliedCoupon(null);
-      setCouponMsg("Invalid coupon code");
+      setCouponMsg("Please enter a coupon code");
+      return;
     }
+    setCouponLoading(true);
+    try {
+      const res = await validateCoupon(code, subtotal, originalShippingCost);
+      const c = res.data.coupon;
+      setAppliedCoupon({ code: c.code, type: c.type, value: c.value, discount: c.discount });
+      setCouponMsg(
+        c.type === "freeship"
+          ? `Coupon "${c.code}" applied: Free shipping`
+          : c.type === "percent"
+            ? `Coupon "${c.code}" applied: ${c.value}% off`
+            : `Coupon "${c.code}" applied: ₹${c.value} off`
+      );
+      setCouponCode("");
+    } catch (err) {
+      setAppliedCoupon(null);
+      setCouponMsg(err.response?.data?.message || "Invalid coupon code");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode("");
+    setCouponMsg("");
   };
 
   const handleApplyAddress = (addr) => {
@@ -555,14 +576,23 @@ export default function Checkout() {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Coupon Code</label>
                 <div className="flex gap-2">
                   <input
-                    type="text" value={couponCode} onChange={(e) => setCouponCode(e.target.value)}
+                    type="text" value={couponCode} onChange={(e) => { setCouponCode(e.target.value); setCouponMsg(""); }}
                     placeholder="Enter code"
-                    className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-sm focus:outline-none focus:border-[#FF80C7] transition-colors uppercase"
+                    disabled={!!appliedCoupon}
+                    className="flex-1 px-4 py-2.5 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-sm focus:outline-none focus:border-[#FF80C7] transition-colors uppercase disabled:bg-gray-100 disabled:text-gray-400"
                   />
-                  <button onClick={handleApplyCoupon}
-                    className="px-4 py-2.5 bg-[#FF80C7] text-white rounded-xl font-semibold text-sm hover:bg-[#16A34A] transition-colors">
-                    Apply
-                  </button>
+                  {appliedCoupon ? (
+                    <button onClick={removeCoupon}
+                      className="px-4 py-2.5 bg-gray-100 text-gray-600 rounded-xl font-semibold text-sm hover:bg-gray-200 transition-colors">
+                      Remove
+                    </button>
+                  ) : (
+                    <button onClick={handleApplyCoupon} disabled={couponLoading}
+                      className="px-4 py-2.5 bg-[#FF80C7] text-white rounded-xl font-semibold text-sm hover:bg-[#16A34A] transition-colors disabled:opacity-60 flex items-center gap-1.5">
+                      {couponLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      Apply
+                    </button>
+                  )}
                 </div>
                 {couponMsg && (
                   <p className={`text-xs mt-1.5 ${appliedCoupon ? "text-green-600" : "text-red-500"}`}>{couponMsg}</p>
@@ -577,7 +607,11 @@ export default function Checkout() {
                 </div>
                 <div className="flex justify-between text-gray-500">
                   <span>Shipping</span>
-                  <span>{shippingCost === 0 ? <span className="text-green-600 font-semibold">FREE</span> : `₹${shippingCost.toFixed(2)}`}</span>
+                  <span>{shippingCost === 0 ? (
+                    appliedCoupon?.type === "freeship"
+                      ? <span className="text-green-600 font-semibold">FREE (saved ₹{originalShippingCost.toFixed(2)})</span>
+                      : <span className="text-green-600 font-semibold">FREE</span>
+                  ) : `₹${shippingCost.toFixed(2)}`}</span>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-green-600">

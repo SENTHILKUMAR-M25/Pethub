@@ -2,6 +2,12 @@ import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 import User from "../models/User.js";
 import { sendOrderStatusEmail, sendRefundEmail } from "../config/email.js";
+import {
+  findValidCoupon,
+  computeCouponDiscount,
+  markCouponUsed,
+  decrementCouponUsed,
+} from "./couponController.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -34,7 +40,18 @@ export const createOrder = async (req, res) => {
       subtotal += product.price * item.quantity;
     }
 
-    const total = subtotal + (shippingCost || 0) - (discount || 0);
+    let finalDiscount = discount || 0;
+    let validatedCoupon = null;
+    if (couponCode) {
+      const result = await findValidCoupon(couponCode, subtotal);
+      if (!result.valid) {
+        return res.status(400).json({ message: result.message });
+      }
+      validatedCoupon = result.coupon;
+      finalDiscount = computeCouponDiscount(validatedCoupon, subtotal, shippingCost || 0);
+    }
+
+    const total = subtotal + (shippingCost || 0) - finalDiscount;
 
     const order = await Order.create({
       user: req.user._id,
@@ -42,11 +59,15 @@ export const createOrder = async (req, res) => {
       shippingAddress,
       paymentMethod: paymentMethod || "cod",
       shippingCost: shippingCost || 0,
-      discount: discount || 0,
+      discount: finalDiscount,
       couponCode,
       subtotal,
       total,
     });
+
+    if (validatedCoupon) {
+      await markCouponUsed(validatedCoupon._id);
+    }
 
     for (const item of items) {
       await Product.findByIdAndUpdate(item.productId, {
@@ -127,6 +148,15 @@ export const updateOrderStatus = async (req, res) => {
         note: cancellationReason || "Order cancelled by admin",
         updatedAt: new Date(),
       });
+    }
+
+    // Restore coupon usage count on cancellation
+    if (orderStatus === "cancelled" && prevStatus !== "cancelled" && order.couponCode) {
+      const Coupon = (await import("../models/Coupon.js")).default;
+      const coupon = await Coupon.findOne({ code: String(order.couponCode).toUpperCase() });
+      if (coupon) {
+        await decrementCouponUsed(coupon._id);
+      }
     }
 
     if (paymentStatus) order.paymentStatus = paymentStatus;
