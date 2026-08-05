@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu, X, ShoppingCart,  Heart, PawPrint, User, Package,
-  LogOut, ChevronDown, CheckCircle, LogIn
+  LogOut, ChevronDown, CheckCircle, LogIn, Ticket
 } from 'lucide-react';
 
 const navLinks = [
@@ -84,6 +84,7 @@ function ProfileDropdown({ user, onLogout, onNavigate }) {
               <div className="p-2">
                 <DropdownItem icon={User} label="My Profile" onClick={() => { close(); onNavigate('/profile'); }} />
                 <DropdownItem icon={Package} label="My Orders" onClick={() => { close(); onNavigate('/orders'); }} />
+                <DropdownItem icon={Ticket} label="My Coupons" onClick={() => { close(); onNavigate('/coupons'); }} />
                 <div className="border-t border-[#E5E7EB] my-1" />
                 <DropdownItem icon={LogOut} label="Logout" onClick={() => { close(); onLogout(); }} danger />
               </div>
@@ -384,6 +385,7 @@ const Navbar = () => {
                     <div className="space-y-1">
                       <MobileProfileLink icon={User} label="My Profile" to="/profile" onClick={() => setIsOpen(false)} />
                       <MobileProfileLink icon={Package} label="My Orders" to="/orders" onClick={() => setIsOpen(false)} />
+                      <MobileProfileLink icon={Ticket} label="My Coupons" to="/coupons" onClick={() => setIsOpen(false)} />
                     </div>
                   </div>
                 )}

@@ -630,17 +630,12 @@ import {
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { getImageUrl } from "../../api/imageUtils";
+import { validateCoupon } from "../../api/couponService";
 
 const SHIPPING_OPTIONS = [
   { id: "standard", name: "Standard Shipping", price: 5.99, time: "5-7 business days" },
   { id: "express", name: "Express Shipping", price: 12.99, time: "2-3 business days" },
   { id: "priority", name: "Priority Shipping", price: 19.99, time: "1-2 business days" },
-];
-
-const COUPONS = [
-  { code: "PETLOVE15", discount: 0.15, type: "percent", minOrder: 50, desc: "15% off orders over ₹50" },
-  { code: "FREESHIP", discount: 0, type: "shipping", minOrder: 35, desc: "Free shipping over ₹35" },
-  { code: "SAVE10", discount: 10, type: "fixed", minOrder: 0, desc: "₹10 off any order" },
 ];
 
 function getCategoryName(item) {
@@ -808,20 +803,19 @@ export default function Cart() {
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [couponMsg, setCouponMsg] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const selectedShipping = SHIPPING_OPTIONS.find((s) => s.id === shippingOption);
   const shippingCost =
-    subtotal >= 35 && appliedCoupon?.type === "shipping"
+    appliedCoupon?.type === "freeship"
       ? 0
       : selectedShipping?.price || 0;
   const discountAmount = appliedCoupon
-    ? appliedCoupon.type === "percent"
-      ? subtotal * appliedCoupon.discount
-      : appliedCoupon.type === "fixed"
-        ? appliedCoupon.discount
-        : 0
+    ? appliedCoupon.type === "freeship"
+      ? 0
+      : appliedCoupon.discount || 0
     : 0;
   const tax = (subtotal - discountAmount) * 0.08;
   const total = Math.max(0, subtotal + shippingCost - discountAmount + tax);
@@ -830,21 +824,32 @@ export default function Cart() {
     0
   ) + discountAmount;
 
-  const applyCoupon = () => {
-    const coupon = COUPONS.find((c) => c.code === couponCode.toUpperCase());
-    if (!coupon) {
-      setCouponMsg("Invalid coupon code");
+  const applyCoupon = async () => {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) {
+      setCouponMsg("Please enter a coupon code");
       setAppliedCoupon(null);
       return;
     }
-    if (subtotal < coupon.minOrder) {
-      setCouponMsg(`Minimum order of ₹${coupon.minOrder} required`);
+    setCouponLoading(true);
+    try {
+      const res = await validateCoupon(code, subtotal, shippingCost);
+      const c = res.data.coupon;
+      setAppliedCoupon({ code: c.code, type: c.type, value: c.value, discount: c.discount });
+      setCouponMsg(
+        c.type === "freeship"
+          ? `Coupon "${c.code}" applied: Free shipping`
+          : c.type === "percent"
+            ? `Coupon "${c.code}" applied: ${c.value}% off`
+            : `Coupon "${c.code}" applied: ₹${c.value} off`
+      );
+      setCouponCode("");
+    } catch (err) {
       setAppliedCoupon(null);
-      return;
+      setCouponMsg(err.response?.data?.message || "Invalid coupon code");
+    } finally {
+      setCouponLoading(false);
     }
-    setAppliedCoupon(coupon);
-    setCouponMsg(`Coupon "${coupon.code}" applied!`);
-    setCouponCode("");
   };
 
   const removeCoupon = () => {
@@ -1074,9 +1079,10 @@ export default function Cart() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={applyCoupon}
-                        className="px-3 sm:px-4 py-2.5 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-xs sm:text-sm font-semibold text-[#1F2937] hover:border-[#22C55E] hover:text-[#22C55E] transition-colors"
+                        disabled={couponLoading}
+                        className="px-3 sm:px-4 py-2.5 bg-[#F8FAFC] border-2 border-[#E5E7EB] rounded-xl text-xs sm:text-sm font-semibold text-[#1F2937] hover:border-[#22C55E] hover:text-[#22C55E] transition-colors disabled:opacity-60"
                       >
-                        Apply
+                        {couponLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Apply"}
                       </motion.button>
                     </div>
                   ) : (
@@ -1088,8 +1094,8 @@ export default function Cart() {
                         </span>
                         <span className="text-[10px] sm:text-xs text-[#22C55E]/70 flex-shrink-0">
                           {appliedCoupon.type === "percent"
-                            ? `-${(appliedCoupon.discount * 100).toFixed(0)}%`
-                            : appliedCoupon.type === "fixed"
+                            ? `-${appliedCoupon.value}%`
+                            : appliedCoupon.type === "flat"
                               ? `-₹${appliedCoupon.discount}`
                               : "Free Ship"}
                         </span>

@@ -4,13 +4,14 @@ import { useCart } from '../../context/CartContext';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import { 
   PawPrint, ShoppingCart, Star, Truck, Shield, Heart, 
-  ArrowRight, ChevronRight, Bone, Fish, Bird, Rabbit,
+  ArrowRight, ChevronRight, ChevronLeft, Bone, Fish, Bird, Rabbit,
   Dog, Cat, Loader2
 } from 'lucide-react';
 import home from "../../assets/home.png"
 import { getCategories } from "../../api/categoryService";
 import { getProducts } from "../../api/productService";
 import { getImageUrl } from "../../api/imageUtils";
+import { getActiveBanners } from "../../api/bannerService";
 
 const useScrollReveal = () => {
   const ref = useRef(null);
@@ -258,6 +259,127 @@ const HeroSection = () => (
   </section>
 );
 
+const BannerLink = ({ banner, children }) => {
+  if (!banner.link) return children;
+  if (banner.link.startsWith("http")) {
+    return <a href={banner.link} target="_blank" rel="noopener noreferrer">{children}</a>;
+  }
+  return <Link to={banner.link}>{children}</Link>;
+};
+
+const BannerCarousel = ({ banners }) => {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || banners.length <= 1) return;
+    const t = setInterval(() => setIndex((i) => (i + 1) % banners.length), 5000);
+    return () => clearInterval(t);
+  }, [paused, banners.length]);
+
+  if (banners.length === 0) return null;
+
+  const go = (dir) => setIndex((i) => (i + dir + banners.length) % banners.length);
+
+  return (
+    <section className="py-8 sm:py-12 bg-[#F8FAFC]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="relative overflow-hidden rounded-3xl shadow-xl"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <div className="relative h-52 sm:h-72 lg:h-96">
+            {banners.map((banner, i) => (
+              <div
+                key={banner._id}
+                className={`absolute inset-0 transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+              >
+                <BannerLink banner={banner}>
+                  {banner.image ? (
+                    <img src={getImageUrl(banner.image)} alt={banner.title} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-[#FF80C7]/20 to-[#38BDF8]/20">
+                      <PawPrint className="w-16 h-16 text-[#FF80C7]" />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent flex items-end">
+                    <div className="p-6 sm:p-10">
+                      <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2">{banner.title}</h2>
+                      {banner.subtitle && <p className="text-white/80 text-sm sm:text-lg">{banner.subtitle}</p>}
+                    </div>
+                  </div>
+                </BannerLink>
+              </div>
+            ))}
+          </div>
+
+          {banners.length > 1 && (
+            <>
+              <button
+                onClick={() => go(-1)}
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white text-[#1F2937] shadow transition-colors"
+                aria-label="Previous banner"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => go(1)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white text-[#1F2937] shadow transition-colors"
+                aria-label="Next banner"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                {banners.map((b, i) => (
+                  <button
+                    key={b._id}
+                    onClick={() => setIndex(i)}
+                    className={`w-2.5 h-2.5 rounded-full transition-colors ${i === index ? "bg-[#FF80C7]" : "bg-white/60 hover:bg-white"}`}
+                    aria-label={`Go to slide ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const BannerStrip = ({ banners }) => {
+  if (banners.length === 0) return null;
+
+  return (
+    <section className="py-8 sm:py-12 bg-[#F8FAFC]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-6">
+          {banners.map((banner) => (
+            <div key={banner._id} className="relative overflow-hidden rounded-3xl shadow-lg group">
+              <BannerLink banner={banner}>
+                {banner.image ? (
+                  <img src={getImageUrl(banner.image)} alt={banner.title} className="w-full h-48 sm:h-64 object-cover group-hover:scale-105 transition-transform duration-500" />
+                ) : (
+                  <div className="w-full h-48 sm:h-64 flex items-center justify-center bg-linear-to-br from-[#FF80C7]/20 to-[#38BDF8]/20">
+                    <PawPrint className="w-12 h-12 text-[#FF80C7]" />
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent flex items-end">
+                  <div className="p-6">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">{banner.title}</h3>
+                    {banner.subtitle && <p className="text-white/80 text-sm">{banner.subtitle}</p>}
+                  </div>
+                </div>
+              </BannerLink>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const CategoriesSection = ({ categories }) => {
   const { ref, controls } = useScrollReveal();
   
@@ -464,17 +586,20 @@ const TestimonialsSection = () => {
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catRes, prodRes] = await Promise.all([
+        const [catRes, prodRes, bannerRes] = await Promise.all([
           getCategories(),
           getProducts({ featured: true }),
+          getActiveBanners(),
         ]);
         setCategories(catRes.data.filter((c) => c.status === "Active"));
         setFeaturedProducts(prodRes.data.filter((p) => p.status === "Active" && p.stock > 0));
+        setBanners(bannerRes.data);
       } catch (err) {
         console.error("Failed to load homepage data:", err);
       } finally {
@@ -492,12 +617,19 @@ const Home = () => {
     );
   }
 
+  const topBanners = banners.filter((b) => b.position === "home_top");
+  const middleBanners = banners.filter((b) => b.position === "home_middle");
+  const bottomBanners = banners.filter((b) => b.position === "home_bottom");
+
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
       <HeroSection />
+      <BannerCarousel banners={topBanners} />
       {categories.length > 0 && <CategoriesSection categories={categories} />}
       {featuredProducts.length > 0 && <FeaturedSection products={featuredProducts} />}
+      <BannerStrip banners={middleBanners} />
       <WhyChooseSection />
+      <BannerStrip banners={bottomBanners} />
       <TestimonialsSection />
     </main>
   );

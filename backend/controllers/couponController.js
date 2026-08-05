@@ -59,6 +59,35 @@ export const getCoupons = async (req, res) => {
   }
 };
 
+export const getAvailableCoupons = async (req, res) => {
+  try {
+    const now = new Date();
+    const coupons = await Coupon.find({
+      status: "Active",
+      $or: [{ startDate: { $exists: false } }, { startDate: null }, { startDate: { $lte: now } }],
+    }).sort({ createdAt: -1 });
+
+    const available = coupons.filter((coupon) => {
+      if (coupon.usageLimit > 0 && coupon.usedCount >= coupon.usageLimit) {
+        return false;
+      }
+      if (coupon.endDate) {
+        const endOfDay = new Date(coupon.endDate);
+        endOfDay.setHours(23, 59, 59, 999);
+        if (endOfDay < now) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    res.json(available);
+  } catch (error) {
+    console.error("Get available coupons error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const updateCoupon = async (req, res) => {
   try {
     const {

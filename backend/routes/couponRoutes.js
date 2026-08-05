@@ -4,6 +4,7 @@ import { protect, adminOnly } from "../middleware/auth.js";
 import {
   createCoupon,
   getCoupons,
+  getAvailableCoupons,
   updateCoupon,
   deleteCoupon,
   validateCoupon,
@@ -14,6 +15,8 @@ const router = express.Router();
 router.post("/", protect, adminOnly, createCoupon);
 
 router.get("/", protect, adminOnly, getCoupons);
+
+router.get("/available", getAvailableCoupons);
 
 router.post("/validate", validateCoupon);
 

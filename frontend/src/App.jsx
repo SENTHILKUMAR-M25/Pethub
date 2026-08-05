@@ -15,6 +15,7 @@ import Checkout from "./pages/user/Checkout";
 import OrderSuccess from "./pages/user/OrderSuccess";
 import UserOrders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
+import UserCoupons from "./pages/user/Coupons";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AdminLogin from "./pages/auth/AdminLogin";
@@ -63,6 +64,7 @@ function AppContent() {
         <Route path="/order-success/:id" element={<OrderSuccess />} />
         <Route path="/orders" element={<UserOrders />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/coupons" element={<UserCoupons />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
