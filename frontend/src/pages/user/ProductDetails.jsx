@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { useWishlist } from '../../context/WishlistContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronRight, Star, ShoppingCart, Heart, Minus, Plus,
@@ -73,10 +74,10 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState("Product Info");
   const { addItem } = useCart();
   const { user } = useAuth();
+  const { toggleItem, isInWishlist } = useWishlist();
   const reviewsRef = useRef(null);
 
   const [reviews, setReviews] = useState([]);
@@ -414,14 +415,14 @@ const ProductDetails = () => {
 
                 <motion.button
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsWishlisted(!isWishlisted)}
+                  onClick={() => toggleItem(product)}
                   className={`p-3 sm:p-4 rounded-xl border-2 transition-all sm:self-auto self-end ${
-                    isWishlisted
+                    isInWishlist(product._id)
                       ? 'border-[#F97316] bg-[#F97316]/10 text-[#F97316]'
                       : 'border-[#E5E7EB] hover:border-[#F97316] text-gray-400 hover:text-[#F97316]'
                   }`}
                 >
-                  <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
+                  <Heart className={`w-5 h-5 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
                 </motion.button>
               </div>
 

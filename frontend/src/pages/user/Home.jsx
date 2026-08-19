@@ -141,7 +141,7 @@ const ProductCard = ({ product, imageUrl }) => {
         <div className="flex items-center gap-1 mb-2">
           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
           <span className="text-sm font-medium text-[#1F2937]">{product.rating || 4.5}</span>
-          <span className="text-sm text-gray-400">({product.reviews || 0})</span>
+          <span className="text-sm text-gray-400">({product.reviewsCount || 0})</span>
         </div>
         <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#FF80C7] transition-colors line-clamp-2">
           {product.name}
@@ -393,7 +393,7 @@ const CategoriesSection = ({ categories }) => {
           variants={containerVariants}
           initial="hidden"
           animate={controls}
-          className="flex gap-4 justify-center items-center"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4"
         >
           {categories.map((cat) => {
             const { Icon, color } = getCategoryMeta(cat.name);
@@ -402,10 +402,10 @@ const CategoriesSection = ({ categories }) => {
               <motion.div key={cat._id} variants={itemVariants}>
                 <Link 
                    to={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group block p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
+                  className="group block p-4 sm:p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
                 >
                   {hasImage ? (
-                    <div className="w-14 h-14 rounded-xl overflow-hidden mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
                       <img
                         src={getImageUrl(cat.image)}
                         alt={cat.name}
@@ -413,8 +413,8 @@ const CategoriesSection = ({ categories }) => {
                       />
                     </div>
                   ) : (
-                    <div className={`w-14 h-14 rounded-xl ${color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-7 h-7" />
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                     </div>
                   )}
                   <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#FF80C7] transition-colors">{cat.name}</h3>

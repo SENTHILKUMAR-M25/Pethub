@@ -117,18 +117,18 @@ const Contact = () => {
             })}
           </div>
 
-          <div className="  mb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="mb-7 bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+              className="bg-white rounded-2xl p-5 sm:p-8 shadow-sm border border-gray-100 lg:col-span-2"
             >
-              <h2 className="text-2xl font-bold text-[#1F2937] mb-6">Send Us a Message</h2>
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
+              <h2 className="text-xl sm:text-2xl font-bold text-[#1F2937] mb-4 sm:mb-6">Send Us a Message</h2>
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Your Name</label>
                     <input
                       type="text"
                       name="name"
@@ -136,11 +136,11 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       placeholder="John Doe"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Your Email</label>
                     <input
                       type="email"
                       name="email"
@@ -148,12 +148,12 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       placeholder="john@example.com"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all"
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all text-sm"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Subject</label>
                   <input
                     type="text"
                     name="subject"
@@ -161,28 +161,28 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="How can we help?"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Message</label>
                   <textarea
                     name="message"
                     value={form.message}
                     onChange={handleChange}
                     required
-                    rows={5}
+                    rows={4}
                     placeholder="Tell us more about your inquiry..."
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all resize-none"
+                    className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 focus:border-[#FF80C7] focus:ring-2 focus:ring-[#FF80C7]/20 outline-none transition-all resize-none text-sm"
                   />
                 </div>
                 {error && (
-                  <p className="text-red-500 text-sm text-center">{error}</p>
+                  <p className="text-red-500 text-xs sm:text-sm text-center">{error}</p>
                 )}
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full bg-linear-to-r from-[#FF80C7] to-[#F97316] text-white font-semibold py-3 px-6 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60"
+                  className="w-full bg-linear-to-r from-[#FF80C7] to-[#F97316] text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-60 text-sm sm:text-base"
                 >
                   {sending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -198,33 +198,14 @@ const Contact = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex  gap-3 flex-1"
+              className="flex flex-col gap-3 sm:gap-4"
             >
-              {contactInfo.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.title}
-                    className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-start gap-4"
-                  >
-                    <div className="w-12 h-12 bg-[#FFE8F5] rounded-xl flex items-center justify-center shrink-0">
-                      <Icon className="w-6 h-6 text-[#FF80C7]" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-[#1F2937] mb-1">{item.title}</h3>
-                      <p className="text-gray-700 text-sm">{item.details}</p>
-                      <p className="text-gray-400 text-xs mt-1">{item.sub}</p>
-                    </div>
-                  </div>
-                );
-              })}
-
-              <div className="bg-linear-to-r from-[#FFE8F5] to-[#FFF3E8] rounded-2xl p-6">
+              <div className="bg-linear-to-r from-[#FFE8F5] to-[#FFF3E8] rounded-2xl p-5 sm:p-6">
                 <div className="flex items-start gap-3">
                   <Clock className="w-5 h-5 text-[#FF80C7] mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-[#1F2937] mb-1">Business Hours</h3>
-                    <div className="text-sm text-gray-600 space-y-1">
+                    <h3 className="font-semibold text-sm sm:text-base text-[#1F2937] mb-1">Business Hours</h3>
+                    <div className="text-xs sm:text-sm text-gray-600 space-y-1">
                       <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
                       <p>Saturday: 10:00 AM - 4:00 PM</p>
                       <p>Sunday: Closed</p>

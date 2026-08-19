@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import { WishlistProvider } from "./context/WishlistContext";
 import AdminLayout from "./layouts/AdminLayout";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -16,6 +17,7 @@ import OrderSuccess from "./pages/user/OrderSuccess";
 import UserOrders from "./pages/user/Orders";
 import Profile from "./pages/user/Profile";
 import UserCoupons from "./pages/user/Coupons";
+import Wishlist from "./pages/user/Wishlist";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AdminLogin from "./pages/auth/AdminLogin";
@@ -65,6 +67,7 @@ function AppContent() {
         <Route path="/orders" element={<UserOrders />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/coupons" element={<UserCoupons />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/about" element={<About />} />
@@ -108,7 +111,9 @@ const App = () => {
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <AppContent />
+          <WishlistProvider>
+            <AppContent />
+          </WishlistProvider>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useWishlist } from '../context/WishlistContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Menu, X, ShoppingCart,  Heart, PawPrint, User, Package,
@@ -147,6 +148,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { itemCount } = useCart();
+  const { itemCount: wishlistCount } = useWishlist();
   const { user, logout } = useAuth();
 
   useEffect(() => {
@@ -248,13 +250,17 @@ const Navbar = () => {
             <div className="hidden md:flex items-center gap-2">
              
 
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+              <Link
+                to="/wishlist"
                 className="p-2.5 rounded-full text-[#1F2937] hover:bg-[#F97316]/10 hover:text-[#F97316] transition-colors relative"
               >
                 <Heart className="w-5 h-5" />
-              </motion.button>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#F97316] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
 
               {user ? (
                 <ProfileDropdown user={user} onLogout={handleLogout} onNavigate={navigate} />
@@ -402,11 +408,14 @@ const Navbar = () => {
                 </Link>
 
                 <div className="flex gap-3">
-                 
-                  <button className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-[#E5E7EB] text-[#1F2937] hover:bg-gray-50 font-medium transition-colors">
+                  <Link
+                    to="/wishlist"
+                    onClick={() => setIsOpen(false)}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-[#E5E7EB] text-[#1F2937] hover:bg-gray-50 font-medium transition-colors"
+                  >
                     <Heart className="w-4 h-4 text-[#F97316]" />
-                    Wishlist
-                  </button>
+                    Wishlist ({wishlistCount})
+                  </Link>
                 </div>
 
                 {user ? (

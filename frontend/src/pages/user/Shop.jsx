@@ -5,12 +5,13 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { 
   Grid3X3, List, SlidersHorizontal, X, ChevronDown, Star, 
   ShoppingCart, Heart, Eye, Check, PawPrint, ArrowUpDown,
-  Filter, Search, Minus, Plus, Trash2, Loader2
+  Filter, Search, Minus, Plus, Loader2
 } from 'lucide-react';
 import { getProducts } from "../../api/productService";
 import { getCategories } from "../../api/categoryService";
 import { getBrands } from "../../api/brandService";
 import { getImageUrl } from "../../api/imageUtils";
+import { useWishlist } from "../../context/WishlistContext";
 
 const PRICE_RANGES = [
   { label: 'Under ₹25', min: 0, max: 25 },
@@ -55,7 +56,7 @@ const TagBadge = ({ tag }) => {
 
 const QuickViewModal = ({ product, onClose, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const { toggleItem, isInWishlist } = useWishlist();
 
   if (!product) return null;
 
@@ -110,7 +111,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
             </div>
 
             <div className="flex items-center gap-4 mb-6">
-              <StarRating rating={product.rating || 4.5} reviews={product.reviews || 0} size="md" />
+              <StarRating rating={product.rating || 4.5} reviews={product.reviewsCount || 0} size="md" />
               <span className={`text-sm font-medium flex items-center gap-1 ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
                 <Check className="w-4 h-4" /> {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
               </span>
@@ -162,10 +163,10 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
                 
                 <motion.button
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`p-3.5 rounded-xl border-2 transition-all ${isWishlisted ? 'border-[#F97316] bg-[#F97316]/10 text-[#F97316]' : 'border-[#E5E7EB] hover:border-[#F97316] text-gray-400 hover:text-[#F97316]'}`}
+                  onClick={() => toggleItem(product)}
+                  className={`p-3.5 rounded-xl border-2 transition-all ${isInWishlist(product._id) ? 'border-[#F97316] bg-[#F97316]/10 text-[#F97316]' : 'border-[#E5E7EB] hover:border-[#F97316] text-gray-400 hover:text-[#F97316]'}`}
                 >
-                  <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
+                  <Heart className={`w-5 h-5 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
                 </motion.button>
               </div>
             </div>
@@ -178,6 +179,7 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
 
 const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
   const imageUrl = getImageUrl(product.images?.[0]);
+  const { toggleItem, isInWishlist } = useWishlist();
 
   return (
     <motion.div
@@ -203,7 +205,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
           </div>
         )}
 
-        <div className="absolute inset-x-0 top-4 flex justify-end px-4 gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute inset-x-0 top-4 flex justify-end px-4 gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -215,14 +217,15 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="p-2.5 bg-white rounded-full shadow-lg text-[#1F2937] hover:text-[#F97316] transition-colors"
+            onClick={() => toggleItem(product)}
+            className={`p-2.5 bg-white rounded-full shadow-lg transition-colors ${isInWishlist(product._id) ? 'text-[#F97316]' : 'text-[#1F2937] hover:text-[#F97316]'}`}
           >
-            <Heart className="w-4 h-4" />
+            <Heart className={`w-4 h-4 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
           </motion.button>
         </div>
 
         {product.stock > 0 && (
-          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <div className="absolute inset-x-0 bottom-0 p-4 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300">
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => onAddToCart(product, 1)}
@@ -240,7 +243,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
         <h3 className="font-semibold text-[#1F2937] mb-2 group-hover:text-[#FF80C7] transition-colors line-clamp-2">
           {product.name}
         </h3>
-        <StarRating rating={product.rating || 4.5} reviews={product.reviews || 0} />
+        <StarRating rating={product.rating || 4.5} reviews={product.reviewsCount || 0} />
         <div className="flex items-center gap-2 mt-3">
           <span className="text-xl font-bold text-[#1F2937]">₹{product.price}</span>
           {product.originalPrice && (
@@ -254,6 +257,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
 
 const ProductCardList = ({ product, onQuickView, onAddToCart }) => {
   const imageUrl = getImageUrl(product.images?.[0]);
+  const { toggleItem, isInWishlist } = useWishlist();
 
   return (
     <motion.div
@@ -294,12 +298,12 @@ const ProductCardList = ({ product, onQuickView, onAddToCart }) => {
               <button onClick={() => onQuickView(product)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                 <Eye className="w-5 h-5 text-gray-400" />
               </button>
-              <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                <Heart className="w-5 h-5 text-gray-400" />
+              <button onClick={() => toggleItem(product)} className={`p-2 hover:bg-gray-100 rounded-full transition-colors ${isInWishlist(product._id) ? 'text-[#F97316]' : 'text-gray-400 hover:text-[#F97316]'}`}>
+                <Heart className={`w-5 h-5 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
               </button>
             </div>
           </div>
-          <StarRating rating={product.rating || 4.5} reviews={product.reviews || 0} size="md" />
+          <StarRating rating={product.rating || 4.5} reviews={product.reviewsCount || 0} size="md" />
           <p className="text-gray-600 mt-3 line-clamp-2">
             {product.description || "Premium quality product for your beloved pet."}
           </p>
@@ -477,7 +481,7 @@ const Shop = () => {
       case 'price-low': result.sort((a, b) => a.price - b.price); break;
       case 'price-high': result.sort((a, b) => b.price - a.price); break;
       case 'rating': result.sort((a, b) => (b.rating || 0) - (a.rating || 0)); break;
-      case 'reviews': result.sort((a, b) => (b.reviews || 0) - (a.reviews || 0)); break;
+      case 'reviews': result.sort((a, b) => (b.reviewsCount || 0) - (a.reviewsCount || 0)); break;
       default: break;
     }
 

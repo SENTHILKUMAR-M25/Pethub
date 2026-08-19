@@ -26,8 +26,8 @@ const Footer = () => {
   return (
     <footer className="bg-[#1F2937] text-white">
       {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 group mb-4">
@@ -36,19 +36,19 @@ const Footer = () => {
                 transition={{ duration: 0.5 }}
                 className="bg-[#FF80C7] p-2 rounded-xl"
               >
-                <PawPrint className="w-6 h-6 text-white" />
+                <PawPrint className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </motion.div>
-              <span className="text-2xl font-bold tracking-tight">
+              <span className="text-xl sm:text-2xl font-bold tracking-tight">
                 Jod<span className="text-[#FF80C7]">Pet</span>Hub
               </span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
+            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-5 max-w-sm">
               Your one-stop shop for all your pet needs. Quality products,
               fast delivery, and happy pets guaranteed!
             </p>
-            <div className="space-y-3 text-sm text-gray-400">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-[#FF80C7] flex-shrink-0" />
+            <div className="space-y-2.5 text-xs sm:text-sm text-gray-400">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-[#FF80C7] flex-shrink-0 mt-0.5" />
                 <span>123 Pet Street, New York, NY 10001</span>
               </div>
               <div className="flex items-center gap-3">
@@ -68,15 +68,15 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-5 text-white/80">
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-5 text-white/80">
               Quick Links
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5 sm:space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#FF80C7] transition-colors group"
+                    className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-[#FF80C7] transition-colors group"
                   >
                     <ChevronRight className="w-3 h-3 text-[#FF80C7] opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                     {link.name}
@@ -88,15 +88,15 @@ const Footer = () => {
 
           {/* Customer Service */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-5 text-white/80">
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-5 text-white/80">
               Customer Service
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5 sm:space-y-3">
               {customerLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.path}
-                    className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#FF80C7] transition-colors group"
+                    className="flex items-center gap-2 text-xs sm:text-sm text-gray-400 hover:text-[#FF80C7] transition-colors group"
                   >
                     <ChevronRight className="w-3 h-3 text-[#FF80C7] opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                     {link.name}
@@ -108,27 +108,27 @@ const Footer = () => {
 
           {/* Newsletter & Social */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-5 text-white/80">
+            <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-5 text-white/80">
               Stay Connected
             </h3>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
               Subscribe for exclusive deals, new arrivals, and pet care tips.
             </p>
-            <div className="flex gap-2 mb-6">
+            <form className="flex flex-col sm:flex-row gap-2 mb-5 sm:mb-6" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 placeholder="Your email"
-                className="flex-1 px-4 py-2.5 bg-white/10 border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF80C7] transition-colors"
+                className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 bg-white/10 border border-white/10 rounded-xl text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF80C7] transition-colors"
               />
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-4 py-2.5 bg-[#FF80C7] hover:bg-[#16A34A] text-white rounded-xl text-sm font-semibold transition-colors flex-shrink-0"
+                className="px-4 py-2 sm:py-2.5 bg-[#FF80C7] hover:bg-[#16A34A] text-white rounded-xl text-xs sm:text-sm font-semibold transition-colors flex-shrink-0"
               >
                 Subscribe
               </motion.button>
-            </div>
-            <div className="flex items-center gap-3">
+            </form>
+            <div className="flex items-center gap-2.5 sm:gap-3">
               {[
                 { icon: Facebook, label: "Facebook" },
                 { icon: Instagram, label: "Instagram" },
@@ -139,7 +139,7 @@ const Footer = () => {
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   href="#"
-                  className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#FF80C7] hover:text-white transition-colors"
+                  className="w-10 h-10 sm:w-10 sm:h-10 rounded-xl bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#FF80C7] hover:text-white transition-colors"
                   aria-label={label}
                 >
                   <Icon className="w-4 h-4" />
@@ -152,20 +152,24 @@ const Footer = () => {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500 text-center sm:text-left">
-            &copy; {new Date().getFullYear()} JodPetHub. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6 text-sm text-gray-500">
-            <Link to="/" className="hover:text-[#FF80C7] transition-colors">Privacy Policy</Link>
-            <Link to="/" className="hover:text-[#FF80C7] transition-colors">Terms of Service</Link>
-            <div className="flex items-center gap-2">
-              <span className="text-xs">We accept</span>
-              <div className="flex items-center gap-1.5">
-                <span className="w-8 h-5 rounded bg-white/10 flex items-center justify-center text-[9px] font-bold text-gray-400">Visa</span>
-                <span className="w-8 h-5 rounded bg-white/10 flex items-center justify-center text-[9px] font-bold text-gray-400">MC</span>
-                <span className="w-8 h-5 rounded bg-white/10 flex items-center justify-center text-[9px] font-bold text-gray-400">PP</span>
-                <span className="w-8 h-5 rounded bg-white/10 flex items-center justify-center text-[9px] font-bold text-gray-400">Amex</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-xs sm:text-sm text-gray-500 text-center md:text-left">
+              &copy; {new Date().getFullYear()} JodPetHub. All rights reserved.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-500">
+              <div className="flex items-center gap-3 sm:gap-6">
+                <Link to="/" className="hover:text-[#FF80C7] transition-colors">Privacy Policy</Link>
+                <Link to="/" className="hover:text-[#FF80C7] transition-colors">Terms of Service</Link>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] sm:text-xs">We accept</span>
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <span className="w-7 h-4 sm:w-8 sm:h-5 rounded bg-white/10 flex items-center justify-center text-[8px] sm:text-[9px] font-bold text-gray-400">Visa</span>
+                  <span className="w-7 h-4 sm:w-8 sm:h-5 rounded bg-white/10 flex items-center justify-center text-[8px] sm:text-[9px] font-bold text-gray-400">MC</span>
+                  <span className="w-7 h-4 sm:w-8 sm:h-5 rounded bg-white/10 flex items-center justify-center text-[8px] sm:text-[9px] font-bold text-gray-400">PP</span>
+                  <span className="w-7 h-4 sm:w-8 sm:h-5 rounded bg-white/10 flex items-center justify-center text-[8px] sm:text-[9px] font-bold text-gray-400">Amex</span>
+                </div>
               </div>
             </div>
           </div>
