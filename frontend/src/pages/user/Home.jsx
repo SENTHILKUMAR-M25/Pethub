@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import { 
   PawPrint, ShoppingCart, Star, Truck, Shield, Heart, 
   ArrowRight, ChevronRight, ChevronLeft, Bone, Fish, Bird, Rabbit,
-  Dog, Cat, Loader2
+  Dog, Cat, Loader2, Eye
 } from 'lucide-react';
 import home from "../../assets/home.png"
 import { getCategories } from "../../api/categoryService";
@@ -95,6 +95,7 @@ const SectionHeader = ({ subtitle, title, align = 'center' }) => (
 
 const ProductCard = ({ product, imageUrl }) => {
   const { addItem } = useCart();
+  const navigate = useNavigate();
 
   return (
     <motion.div 
@@ -120,10 +121,12 @@ const ProductCard = ({ product, imageUrl }) => {
          <motion.button
            whileHover={{ scale: 1.1 }}
            whileTap={{ scale: 0.9 }}
-           className="absolute top-3 right-3 p-2.5 bg-white rounded-full shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-[#1F2937] hover:text-[#F97316]"
+           onClick={() => navigate(`/product/${product._id}`)}
+           className="absolute top-3 right-3 p-2.5 bg-white rounded-full shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-[#1F2937] hover:text-[#FF80C7]"
+           title="View Product"
          >
-          <Heart className="w-5 h-5" />
-        </motion.button>
+           <Eye className="w-5 h-5" />
+         </motion.button>
 
         <div className="absolute inset-x-0 bottom-0 p-4 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300">
           <motion.button
@@ -148,6 +151,12 @@ const ProductCard = ({ product, imageUrl }) => {
         </h3>
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-[#1F2937]">₹{product.price}</span>
+          <Link 
+            to={`/product/${product._id}`}
+            className="text-sm font-medium text-[#FF80C7] hover:text-[#16A34A] transition-colors"
+          >
+            View Product
+          </Link>
         </div>
       </div>
     </motion.div>

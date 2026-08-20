@@ -424,6 +424,11 @@ const ProductDetails = () => {
                 >
                   <Heart className={`w-5 h-5 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
                 </motion.button>
+                <span className={`text-xs sm:text-sm font-medium ${
+                  isInWishlist(product._id) ? 'text-[#F97316]' : 'text-gray-400'
+                }`}>
+                  {isInWishlist(product._id) ? 'Added to wishlist' : 'Add to wishlist'}
+                </span>
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-500">
