@@ -117,15 +117,15 @@ const ProductCard = ({ product, imageUrl }) => {
           </span>
         )}
         
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="absolute top-3 right-3 p-2.5 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity text-[#1F2937] hover:text-[#F97316]"
-        >
+         <motion.button
+           whileHover={{ scale: 1.1 }}
+           whileTap={{ scale: 0.9 }}
+           className="absolute top-3 right-3 p-2.5 bg-white rounded-full shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity text-[#1F2937] hover:text-[#F97316]"
+         >
           <Heart className="w-5 h-5" />
         </motion.button>
 
-        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <div className="absolute inset-x-0 bottom-0 p-4 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300">
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => addItem(product, 1)}
@@ -382,48 +382,95 @@ const BannerStrip = ({ banners }) => {
 
 const CategoriesSection = ({ categories }) => {
   const { ref, controls } = useScrollReveal();
-  
+  const scrollRef = useRef(null);
+
+  const scroll = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const amount = el.clientWidth * 0.7;
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  };
+
   return (
     <section className="py-14 sm:py-16 md:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader subtitle="Browse by Pet" title="Shop for Your Companion" />
-        
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-4"
-        >
-          {categories.map((cat) => {
-            const { Icon, color } = getCategoryMeta(cat.name);
-            const hasImage = cat.image;
-            return (
-              <motion.div key={cat._id} variants={itemVariants}>
-                <Link 
-                   to={`/shop?category=${encodeURIComponent(cat.name)}`}
-                  className="group block p-4 sm:p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white"
+        <div className="flex items-end justify-between mb-8">
+          <SectionHeader subtitle="Browse by Pet" title="Shop for Your Companion" align="left" />
+          <div className="hidden sm:flex items-center gap-2">
+            <button
+              onClick={() => scroll(-1)}
+              className="p-2 rounded-full border border-[#E5E7EB] text-[#1F2937] hover:border-[#FF80C7] hover:text-[#FF80C7] transition-colors"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              className="p-2 rounded-full border border-[#E5E7EB] text-[#1F2937] hover:border-[#FF80C7] hover:text-[#FF80C7] transition-colors"
+              aria-label="Next"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        <div className="relative">
+          <motion.div
+            ref={ref}
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
+          >
+            {categories.map((cat) => {
+              const { Icon, color } = getCategoryMeta(cat.name);
+              const hasImage = cat.image;
+              return (
+                <motion.div
+                  key={cat._id}
+                  variants={itemVariants}
+                  className="snap-start shrink-0 w-[160px] sm:w-[180px]"
                 >
-                  {hasImage ? (
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                      <img
-                        src={getImageUrl(cat.image)}
-                        alt={cat.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
-                    </div>
-                  )}
-                  <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#FF80C7] transition-colors">{cat.name}</h3>
-                  <p className="text-sm text-gray-500">{cat.productCount || 0} Products</p>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                  <Link 
+                    to={`/shop?category=${encodeURIComponent(cat.name)}`}
+                    className="group block p-4 sm:p-6 rounded-2xl border border-[#E5E7EB] hover:border-[#FF80C7] hover:shadow-lg hover:shadow-[#FF80C7]/5 transition-all duration-300 bg-white h-full"
+                  >
+                    {hasImage ? (
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                        <img
+                          src={getImageUrl(cat.image)}
+                          alt={cat.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${color} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform`}>
+                        <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
+                      </div>
+                    )}
+                    <h3 className="font-bold text-[#1F2937] mb-1 group-hover:text-[#FF80C7] transition-colors text-sm sm:text-base">{cat.name}</h3>
+                    <p className="text-xs sm:text-sm text-gray-500">{cat.productCount || 0} Products</p>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          <div className="flex sm:hidden items-center justify-center gap-3 mt-6">
+            <button
+              onClick={() => scroll(-1)}
+              className="px-4 py-2 rounded-full border border-[#E5E7EB] text-sm font-medium text-[#1F2937] hover:border-[#FF80C7] hover:text-[#FF80C7] transition-colors"
+            >
+              Previous
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              className="px-4 py-2 rounded-full border border-[#E5E7EB] text-sm font-medium text-[#1F2937] hover:border-[#FF80C7] hover:text-[#FF80C7] transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

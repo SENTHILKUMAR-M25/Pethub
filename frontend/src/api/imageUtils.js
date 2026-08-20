@@ -1,9 +1,10 @@
-const BASE_URL = import.meta.env.VITE_IMAGE_URL || "";
+const API_BASE = (import.meta.env.VITE_API_URL || "/api").replace(/\/api\/?$/, "");
 
 export function getImageUrl(img) {
   if (!img || typeof img !== "string") return null;
   if (img.startsWith("http")) return img;
-  return `${BASE_URL}${img}`;
+  if (img.startsWith("/uploads")) return `${API_BASE}${img}`;
+  return img;
 }
 
 export function getProductImage(product) {
