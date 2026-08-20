@@ -270,10 +270,12 @@ const HeroSection = () => (
 
 const BannerLink = ({ banner, children }) => {
   if (!banner.link) return children;
-  if (banner.link.startsWith("http")) {
-    return <a href={banner.link} target="_blank" rel="noopener noreferrer">{children}</a>;
+  const link = banner.link.trim();
+  if (!link || link.includes("localhost") || link.includes("127.0.0.1")) return children;
+  if (link.startsWith("http")) {
+    return <a href={link} target="_blank" rel="noopener noreferrer">{children}</a>;
   }
-  return <Link to={banner.link}>{children}</Link>;
+  return <Link to={link}>{children}</Link>;
 };
 
 const BannerCarousel = ({ banners }) => {
@@ -680,6 +682,22 @@ const Home = () => {
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
       <HeroSection />
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#FF80C7] to-[#F97316] py-8 sm:py-10 md:py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
+            <div className="text-center md:text-left">
+              <p className="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-1 sm:mb-2">Limited Time Offer</p>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-3">Summer Sale</h2>
+              <p className="text-white/90 text-sm sm:text-base md:text-lg max-w-xl">Get up to <span className="font-bold underline decoration-2 underline-offset-4">50% OFF</span> on pet essentials. Don't miss out on the best deals of the season!</p>
+            </div>
+            <Link to="/shop" className="shrink-0 bg-white text-[#F97316] px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-gray-100 transition-colors shadow-lg">
+              Shop Now
+            </Link>
+          </div>
+        </div>
+        <div className="absolute -top-10 -right-10 w-40 h-40 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-2xl"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-2xl"></div>
+      </section>
       <BannerCarousel banners={topBanners} />
       {categories.length > 0 && <CategoriesSection categories={categories} />}
       {featuredProducts.length > 0 && <FeaturedSection products={featuredProducts} />}

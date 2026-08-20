@@ -167,6 +167,12 @@ export default function Banners() {
       return;
     }
 
+    const linkTrimmed = form.link.trim();
+    if (linkTrimmed && (linkTrimmed.includes("localhost") || linkTrimmed.includes("127.0.0.1"))) {
+      setFormError("Banner link cannot contain localhost or 127.0.0.1. Use a production URL or relative path.");
+      return;
+    }
+
     setIsSubmitting(true);
     const formData = new FormData();
     formData.append("title", form.title.trim());
