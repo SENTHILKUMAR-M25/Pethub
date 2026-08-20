@@ -39,7 +39,7 @@ const corsOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:5000",
-  "https://pethub-one.vercel.app/",
+  "https://pethub-one.vercel.app",
 ];
 
 app.use(
