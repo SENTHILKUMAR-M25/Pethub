@@ -416,19 +416,18 @@ const ProductDetails = () => {
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => toggleItem(product)}
-                  className={`p-3 sm:p-4 rounded-xl border-2 transition-all sm:self-auto self-end ${
+                  className={`p-3 sm:p-4 rounded-xl border-2 transition-all flex items-center justify-center gap-2 ${
                     isInWishlist(product._id)
                       ? 'border-[#F97316] bg-[#F97316]/10 text-[#F97316]'
                       : 'border-[#E5E7EB] hover:border-[#F97316] text-gray-400 hover:text-[#F97316]'
                   }`}
+                  title={isInWishlist(product._id) ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
                   <Heart className={`w-5 h-5 ${isInWishlist(product._id) ? 'fill-current' : ''}`} />
+                  <span className="text-xs sm:text-sm font-medium whitespace-nowrap">
+                    {isInWishlist(product._id) ? 'Added to wishlist' : 'Add to wishlist'}
+                  </span>
                 </motion.button>
-                <span className={`text-xs sm:text-sm font-medium ${
-                  isInWishlist(product._id) ? 'text-[#F97316]' : 'text-gray-400'
-                }`}>
-                  {isInWishlist(product._id) ? 'Added to wishlist' : 'Add to wishlist'}
-                </span>
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-500">
