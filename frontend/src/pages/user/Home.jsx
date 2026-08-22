@@ -278,87 +278,6 @@ const BannerLink = ({ banner, children }) => {
   return <Link to={link}>{children}</Link>;
 };
 
-const BannerCarousel = ({ banners }) => {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (paused || banners.length <= 1) return;
-    const t = setInterval(() => setIndex((i) => (i + 1) % banners.length), 5000);
-    return () => clearInterval(t);
-  }, [paused, banners.length]);
-
-  if (banners.length === 0) return null;
-
-  const go = (dir) => setIndex((i) => (i + dir + banners.length) % banners.length);
-
-  return (
-    <section className="py-8 sm:py-12 bg-[#F8FAFC]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className="relative overflow-hidden rounded-3xl shadow-xl"
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
-          <div className="relative h-52 sm:h-72 lg:h-96">
-            {banners.map((banner, i) => (
-              <div
-                key={banner._id}
-                className={`absolute inset-0 transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-              >
-                <BannerLink banner={banner}>
-                  {banner.image ? (
-                    <img src={getImageUrl(banner.image)} alt={banner.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-[#FF80C7]/20 to-[#38BDF8]/20">
-                      <PawPrint className="w-16 h-16 text-[#FF80C7]" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent flex items-end">
-                    <div className="p-6 sm:p-10">
-                      <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2">{banner.title}</h2>
-                      {banner.subtitle && <p className="text-white/80 text-sm sm:text-lg">{banner.subtitle}</p>}
-                    </div>
-                  </div>
-                </BannerLink>
-              </div>
-            ))}
-          </div>
-
-          {banners.length > 1 && (
-            <>
-              <button
-                onClick={() => go(-1)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white text-[#1F2937] shadow transition-colors"
-                aria-label="Previous banner"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => go(1)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white text-[#1F2937] shadow transition-colors"
-                aria-label="Next banner"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                {banners.map((b, i) => (
-                  <button
-                    key={b._id}
-                    onClick={() => setIndex(i)}
-                    className={`w-2.5 h-2.5 rounded-full transition-colors ${i === index ? "bg-[#FF80C7]" : "bg-white/60 hover:bg-white"}`}
-                    aria-label={`Go to slide ${i + 1}`}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const BannerStrip = ({ banners }) => {
   if (banners.length === 0) return null;
 
@@ -394,12 +313,45 @@ const BannerStrip = ({ banners }) => {
 const CategoriesSection = ({ categories }) => {
   const { ref, controls } = useScrollReveal();
   const scrollRef = useRef(null);
+  const [paused, setPaused] = useState(false);
+
+  const getVisibleCount = () => {
+    const w = window.innerWidth;
+    if (w >= 1024) return Math.min(categories.length, 4);
+    if (w >= 768) return Math.min(categories.length, 3);
+    if (w >= 640) return Math.min(categories.length, 2);
+    return Math.min(categories.length, 1);
+  };
+
+  useEffect(() => {
+    if (paused || categories.length === 0) return;
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const getScrollStep = () => {
+      const card = el.querySelector('[data-category-card]');
+      if (!card) return 200;
+      return card.offsetWidth + 16;
+    };
+
+    const t = setInterval(() => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScroll - 2) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+      }
+    }, 3500);
+
+    return () => clearInterval(t);
+  }, [paused, categories]);
 
   const scroll = (dir) => {
     const el = scrollRef.current;
     if (!el) return;
-    const amount = el.clientWidth * 0.7;
-    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+    const card = el.querySelector('[data-category-card]');
+    const amount = card ? card.offsetWidth + 16 : 200;
+    el.scrollBy({ left: dir * amount, behavior: 'smooth' });
   };
 
   return (
@@ -426,11 +378,10 @@ const CategoriesSection = ({ categories }) => {
         </div>
 
         <div className="relative">
-          <motion.div
-            ref={ref}
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
+          <div
+            ref={scrollRef}
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
             className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
           >
             {categories.map((cat) => {
@@ -440,6 +391,7 @@ const CategoriesSection = ({ categories }) => {
                 <motion.div
                   key={cat._id}
                   variants={itemVariants}
+                  data-category-card
                   className="snap-start shrink-0 w-[160px] sm:w-[180px]"
                 >
                   <Link 
@@ -465,7 +417,7 @@ const CategoriesSection = ({ categories }) => {
                 </motion.div>
               );
             })}
-          </motion.div>
+          </div>
 
           <div className="flex sm:hidden items-center justify-center gap-3 mt-6">
             <button
@@ -641,6 +593,82 @@ const TestimonialsSection = () => {
 };
 
 
+const PromoCarousel = ({ promos }) => {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused || promos.length <= 1) return;
+    const t = setInterval(() => setIndex((i) => (i + 1) % promos.length), 5000);
+    return () => clearInterval(t);
+  }, [paused, promos.length]);
+
+  if (promos.length === 0) return null;
+
+  const go = (dir) => setIndex((i) => (i + dir + promos.length) % promos.length);
+
+  return (
+    <section className="relative overflow-hidden bg-gradient-to-r from-[#FF80C7] to-[#F97316] py-8 sm:py-10 md:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="relative"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {promos.map((promo, i) => (
+            <div
+              key={promo.id}
+              className={`transition-opacity duration-700 ${i === index ? "opacity-100" : "opacity-0 pointer-events-none absolute inset-0"}`}
+            >
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
+                <div className="text-center md:text-left">
+                  <p className="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-1 sm:mb-2">{promo.subtitle}</p>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-3">{promo.title}</h2>
+                  <p className="text-white/90 text-sm sm:text-base md:text-lg max-w-xl">{promo.description}</p>
+                </div>
+                <Link to={promo.link} className="shrink-0 bg-white text-[#F97316] px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-gray-100 transition-colors shadow-lg">
+                  {promo.cta}
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="absolute -top-10 -right-10 w-40 h-40 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-2xl"></div>
+      <div className="absolute -bottom-10 -left-10 w-40 h-40 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-2xl"></div>
+
+      {promos.length > 1 && (
+        <>
+          <button
+            onClick={() => go(-1)}
+            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white text-[#1F2937] shadow transition-colors"
+            aria-label="Previous promotion"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => go(1)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white text-[#1F2937] shadow transition-colors"
+            aria-label="Next promotion"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+            {promos.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIndex(i)}
+                className={`w-2.5 h-2.5 rounded-full transition-colors ${i === index ? "bg-white" : "bg-white/60 hover:bg-white"}`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </section>
+  );
+};
+
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -675,30 +703,41 @@ const Home = () => {
     );
   }
 
-  const topBanners = banners.filter((b) => b.position === "home_top");
   const middleBanners = banners.filter((b) => b.position === "home_middle");
   const bottomBanners = banners.filter((b) => b.position === "home_bottom");
+
+  const promos = [
+    {
+      id: "summer-sale",
+      subtitle: "Limited Time Offer",
+      title: "Summer Sale",
+      description: <>Get up to <span className="font-bold underline decoration-2 underline-offset-4">50% OFF</span> on pet essentials. Don't miss out on the best deals of the season!</>,
+      cta: "Shop Now",
+      link: "/shop",
+    },
+    {
+      id: "free-shipping",
+      subtitle: "Free Delivery",
+      title: "Free Shipping",
+      description: <>Enjoy <span className="font-bold underline decoration-2 underline-offset-4">free shipping</span> on all orders above ₹500. Treat your pet without the extra cost!</>,
+      cta: "Shop Now",
+      link: "/shop",
+    },
+    {
+      id: "new-arrivals",
+      subtitle: "Fresh Stock",
+      title: "New Arrivals",
+      description: <>Check out the <span className="font-bold underline decoration-2 underline-offset-4">latest collection</span> of toys, treats, and accessories for your furry friends.</>,
+      cta: "Explore New",
+      link: "/shop",
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
       <HeroSection />
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#FF80C7] to-[#F97316] py-8 sm:py-10 md:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
-            <div className="text-center md:text-left">
-              <p className="text-white/80 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-1 sm:mb-2">Limited Time Offer</p>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-3">Summer Sale</h2>
-              <p className="text-white/90 text-sm sm:text-base md:text-lg max-w-xl">Get up to <span className="font-bold underline decoration-2 underline-offset-4">50% OFF</span> on pet essentials. Don't miss out on the best deals of the season!</p>
-            </div>
-            <Link to="/shop" className="shrink-0 bg-white text-[#F97316] px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-gray-100 transition-colors shadow-lg">
-              Shop Now
-            </Link>
-          </div>
-        </div>
-        <div className="absolute -top-10 -right-10 w-40 h-40 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-2xl"></div>
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 sm:w-64 sm:h-64 bg-white/10 rounded-full blur-2xl"></div>
-      </section>
-      <BannerCarousel banners={topBanners} />
+      <PromoCarousel promos={promos} />
+      {/* <BannerCarousel banners={banners} /> */}
       {categories.length > 0 && <CategoriesSection categories={categories} />}
       {featuredProducts.length > 0 && <FeaturedSection products={featuredProducts} />}
       <BannerStrip banners={middleBanners} />

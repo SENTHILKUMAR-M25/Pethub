@@ -229,7 +229,7 @@ const ProductCardGrid = ({ product, onQuickView, onAddToCart }) => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => onAddToCart(product, 1)}
-              className="w-full bg-[#FF80C7] hover:bg-[#16A34A] text-white py-3 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg"
+              className="w-full bg-[#FF80C7] hover:bg-[#16A34A] text-white py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg text-sm"
             >
               <ShoppingCart className="w-4 h-4" />
               Add to Cart
@@ -322,13 +322,13 @@ const ProductCardList = ({ product, onQuickView, onAddToCart }) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onAddToCart(product, 1)}
-              className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-5 sm:px-6 py-2.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#FF80C7]/20"
+              className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-4 sm:px-5 py-2 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#FF80C7]/20 text-sm"
             >
               <ShoppingCart className="w-4 h-4" />
               Add to Cart
             </motion.button>
           ) : (
-            <span className="text-gray-400 font-medium px-6 py-2.5">Out of Stock</span>
+            <span className="text-gray-400 font-medium px-4 py-2 text-sm">Out of Stock</span>
           )}
         </div>
       </div>
@@ -603,7 +603,7 @@ const Shop = () => {
         </motion.div>
 
         <div className="flex gap-8">
-          <aside className="hidden lg:block w-64 flex-shrink-0">
+          <aside className="hidden lg:block w-64 xl:w-60 flex-shrink-0">
             <div className="sticky top-28 bg-white rounded-2xl border border-[#E5E7EB] p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-lg text-[#1F2937] flex items-center gap-2">
@@ -613,7 +613,7 @@ const Shop = () => {
                 {activeFiltersCount > 0 && (
                   <button 
                     onClick={clearFilters}
-                    className="text-sm text-[#F97316] hover:text-[#16A34A] font-medium"
+                    className="text-xs text-[#F97316] hover:text-[#16A34A] font-medium"
                   >
                     Clear all
                   </button>
@@ -688,8 +688,11 @@ const Shop = () => {
             >
               <div className="flex items-center gap-4">
                 <button 
+                  type="button"
                   onClick={() => setShowMobileFilters(true)}
-                  className="lg:hidden flex items-center gap-2 px-4 py-2.5 border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] font-medium hover:border-[#FF80C7] transition-colors"
+                  aria-expanded={showMobileFilters}
+                  aria-label="Open filters"
+                  className="lg:hidden flex items-center gap-2 px-3 py-2 border-2 border-[#E5E7EB] rounded-xl text-[#1F2937] text-sm font-medium hover:border-[#FF80C7] transition-colors"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
                   Filters
@@ -774,7 +777,7 @@ const Shop = () => {
             <motion.div
               layout
               className={viewMode === 'grid' 
-                ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"
+                ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5"
                 : "space-y-4"
               }
             >
@@ -812,7 +815,7 @@ const Shop = () => {
                 <p className="text-gray-500 mb-6">Try adjusting your filters or search query</p>
                 <button 
                   onClick={clearFilters}
-                  className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+                  className="bg-[#FF80C7] hover:bg-[#16A34A] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
                 >
                   Clear all filters
                 </button>
@@ -896,13 +899,13 @@ const Shop = () => {
               <div className="p-6 border-t border-[#E5E7EB] space-y-3 sticky bottom-0 bg-white">
                 <button 
                   onClick={() => setShowMobileFilters(false)}
-                  className="w-full bg-[#FF80C7] text-white py-3 rounded-xl font-bold"
+                  className="w-full bg-[#FF80C7] hover:bg-[#16A34A] text-white py-2.5 rounded-xl font-bold text-sm"
                 >
                   Show {filteredProducts.length} Results
                 </button>
                 <button 
                   onClick={clearFilters}
-                  className="w-full border-2 border-[#E5E7EB] text-gray-600 py-3 rounded-xl font-semibold"
+                  className="w-full border-2 border-[#E5E7EB] text-gray-600 py-2.5 rounded-xl font-semibold text-sm"
                 >
                   Clear All
                 </button>
